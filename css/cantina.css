@@ -26,6 +26,8 @@
 }
 .divCentro {
 	margin: 0 auto;
+	width: -moz-fit-content;
+	width: -webkit-fit-content;
 }
 
 fieldset .oldfielset {
@@ -44,3 +46,21 @@ fieldset legend .oldlegend {
 a:focus {
    outline: 0;
 }
+.divqnt {
+	float:right;
+}
+
+#footer {
+    background-color: #e5e5e5;
+    border-top: thin solid #e0e0e0;
+    bottom: 0;
+    margin: auto;
+    max-width: 700px;
+    padding-bottom: 5px;
+    padding-top: 10px;
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+body.modal-open { overflow:inherit; padding-right:inherit !important; }

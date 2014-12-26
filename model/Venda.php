@@ -33,17 +33,41 @@ class Venda {
 		$conexaoCantina->update("venda", [
 		"valor" => $precototal
 		],["id" =>$last_venda_id]);
-			var_dump( $conexaoCantina->log() );
+			//var_dump( $conexaoCantina->log() );
 		return $last_venda_id;
 	}
 	
 	public static function getVendas() {
+		//simular sobrecarga de metodo
+		//arg[0]= data inicio
+		//arg[1]= data fim
+		//arg[2]= index paginacao
+		$numArgs = (int)func_num_args();
+        $args = func_get_args();
 		$conexaoCantina = conectaCantina();
-		$query = "select v.*, c.nome,
+		if($numArgs == 2){
+			$query = "select v.*, c.nome,
 					if(v.cliente_id<>0,c.nome, cliente_nome) as cliente
 					from venda v
 					left join cliente c on(v.cliente_id=c.id)
-					order by v.data";
+					 where     date(data) >= '$args[0]' and date(data) <= '$args[1]'
+					order by v.data desc";
+		} else if($numArgs == 3){
+			$query = "select v.*, c.nome,
+					if(v.cliente_id<>0,c.nome, cliente_nome) as cliente
+					from venda v
+					left join cliente c on(v.cliente_id=c.id)
+					 where     date(data) >= '$args[0]' and date(data) <= '$args[1]'
+					order by v.data desc
+					LIMIT $args[2],10";
+		} else {
+			$query = "select v.*, c.nome,
+					if(v.cliente_id<>0,c.nome, cliente_nome) as cliente
+					from venda v
+					left join cliente c on(v.cliente_id=c.id)
+					order by v.data desc";
+		}
+		//echo $query;
 		$vendas = $conexaoCantina->query($query)->fetchAll();
 		return $vendas;
 	}
@@ -55,5 +79,11 @@ class Venda {
 				";
 		$produtos_venda = $conexaoCantina->query($query)->fetchAll();
 		return $produtos_venda;
+	}
+	
+	public static function getCount() {
+		$conexaoCantina = conectaCantina();
+		$count = $conexaoCantina->count("venda");
+		return $count;
 	}
 }	

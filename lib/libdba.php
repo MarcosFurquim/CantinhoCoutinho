@@ -19,4 +19,11 @@ function ConverteDataBD($data) {
 	return $dataE[1]." ".explode("-",$dataE[0])[2]."/".explode("-",$dataE[0])[1]."/".explode("-",$dataE[0])[0];
 }
 
+function inverteDataBD($data) {
+	//DD/MM/YYYY PARA YYYY-MM-DD
+	$dataE = explode("/",$data);
+	
+	return $dataE[2]."-".$dataE[1]."-".$dataE[0];
+}
+
 ?>

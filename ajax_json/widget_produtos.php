@@ -4,15 +4,15 @@
 	$produtos = Produto::getProdutos($_GET['nome']);
 ?>
 <style>
-tbody tr {
+ #widget tbody tr {
 cursor:pointer;
 }
 </style>
-<table class="table table-striped table-hover">
+<table id="widget" class="table table-striped table-hover">
     <thead>
         <tr>
             <th>Nome</th>
-            <th>Preço</th>
+            <th>Preço(R$)</th>
         </tr>
     </thead>
 	<tbody>

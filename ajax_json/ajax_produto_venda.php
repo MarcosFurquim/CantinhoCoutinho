@@ -11,7 +11,7 @@ $venda = Venda::getProdutosVenda($_GET['id']);
     <thead>
         <tr>
             <th>Nome</th>
-            <th>Preço</th>
+            <th>Preço(R$)</th>
             <th>Quantidade</th>
         </tr>
     </thead>

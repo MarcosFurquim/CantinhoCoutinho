@@ -1,6 +1,10 @@
 ﻿<?php
 require_once('./model/Cliente.php');
 $clientes = Cliente::getClientes();
+$clientes_qnt = Cliente::getCount();
+
+$qnt_page = $clientes_qnt/10;
+$qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qnt_page, 0, 1);
 ?>
 <script>
 	$(function() {
@@ -14,33 +18,118 @@ $clientes = Cliente::getClientes();
 		  modal.find('#ModalLabel').text('Creditar ' + nome_user);
 		  modal.find('#id_user').val(id_user);
 		  modal.find("#valor").val("");
-		  //modal.find('.modal-body input').val(recipient)
+		  $('#valor').mask("#.##0,00", {reverse: true});
 		});
-		 $('#valor').mask("#.##0,00", {reverse: true});
-	});
-
-	function ajaxCreditarUsuario() {
-		$.ajax({
-					url: "./ajax_json/ajax_credita_usuario.php",
+		$('#creditar_modal').on('shown.bs.modal', function (event) {
+			$('#valor').focus();
+		});
+		$("body").keypress(function(event){
+			 var keycode = (event.keyCode ? event.keyCode : event.which);
+			// console.log(keycode);
+			// console.log(event.currentTarget);
+			// console.log($(event.currentTarget).hasClass("modal-open"));
+			if(event.keyCode == 13 && $(event.currentTarget).hasClass("modal-open")){//tecla enter e tela de credito estiver aberto
+				event.preventDefault();
+				ajaxCreditarUsuario();
+			}
+		});
+		 
+		 function paginacao(){
+			$('#paginacao a').click(function (e) {
+				e.preventDefault();
+				var img = $("<img />").attr('src', './img/ajax-loader.gif').attr('style','margin: 0px 50%;');
+				$.ajax({
+						url: "./ajax_json/ajax_busca_cliente.php",
+						type: "GET",
+						data: 'nome='+$('#filtro_nome_cliente').val()+'&pag='+$(this).html(),
+						beforeSend: function(){
+							$("#cliente_list").html("");
+							$("#cliente_list").append(img)
+						},
+						complete: function(){
+							//$("#cliente_list").append(img);
+						},
+						success:function(result){
+							$("#cliente_list").html(result);
+						}
+						}).done(function(result) {
+							//alert(result);
+						});
+			});
+		}
+		paginacao();
+		$('#paginacao a:contains(1)').parent().toggleClass("active");
+		$('#filtro_nome_cliente').keyup(function() {
+			var img = $("<img />").attr('src', './img/ajax-loader.gif').attr('style','margin: 0px 50%;');
+			$.ajax({
+					url: "./ajax_json/ajax_busca_cliente.php",
 					type: "GET",
-					data: 'id='+$("#id_user").val()+'&valor='+$("#valor").val(),
+					data: 'nome='+$(this).val()+'&pag=1',
 					beforeSend: function(){
-						//$("#carregando").show('fast');
-						//$("#principal_div").html("");
-						//$("#principal_div").append(img)
+						$("#cliente_list").html("");
+						$("#cliente_list").append(img)
 					},
 					complete: function(){
-						//$("#principal_div").append(img);
+						//$("#cliente_list").append(img);
 					},
 					success:function(result){
-						if(result>0) {
-							alert('Creditado cliente com sucesso!');
-							location.reload();
+						$("#cliente_list").html(result);
+						//caso o filtro estiver vazio, entao qnt é a mesma da original, senao pega de qts voltaram
+						var qnt_reg;
+						if($("#filtro_nome_cliente").val()=="") {
+							qnt_reg = parseInt($("#paginacao").data("treg"));
+						} else {
+							qnt_reg = $("table tbody tr").length;
 						}
+						//atualiza numero acima da tabela
+						$(".divqnt span b").html(qnt_reg);
+						//calcula qnt de pagina a partir de qnts resultados foram encontrados
+						var qnt_page = qnt_reg/10;
+						qnt_page = (qnt_page.toString().substr(2, 1) > 0)?(parseInt(qnt_page.toString().substr(0, 1))+1):qnt_page.toString().substr(0, 1);
+						console.log(qnt_page);
+						//limpa a paginacao
+						$("#paginacao").html("");
+						//monta paginacao
+						for(var i=1;i<=qnt_page;i++) {
+							$("#paginacao").append("<li><a href='#'>"+i+"</a></li>");
+						}
+						//ativa a primeira pagina
+						$('#paginacao a:contains(1)').parent().toggleClass("active");
+						paginacao();
 					}
 					}).done(function(result) {
 						//alert(result);
 					});
+		});
+		
+	});
+
+	function ajaxCreditarUsuario() {
+		if(numeral().unformat($("#valor").val()) > 0) {
+			$.ajax({
+						url: "./ajax_json/ajax_credita_usuario.php",
+						type: "GET",
+						data: 'id='+$("#id_user").val()+'&valor='+$("#valor").val(),
+						beforeSend: function(){
+							//$("#carregando").show('fast');
+							//$("#principal_div").html("");
+							//$("#principal_div").append(img)
+						},
+						complete: function(){
+							//$("#principal_div").append(img);
+						},
+						success:function(result){
+							if(result>0) {
+								alert('Creditado cliente com sucesso!');
+								location.reload();
+							}
+						}
+						}).done(function(result) {
+							//alert(result);
+						});
+		} else {
+			return false;
+		}
 	}
 	
 	function ajaxExcluiCliente(idUser) {
@@ -70,35 +159,41 @@ $clientes = Cliente::getClientes();
 	}
 </script>
 <div class="divbotao_novo"><button class="btn btn-default btn-sm" onclick="location.href='?page=CadastroCliente'">Novo</button></div>
-<table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Fone</th>
-            <th colspan="3">Crédito</th>
-        </tr>
-    </thead>
-	<tbody>
-		<?php for($i=0;$i<sizeof($clientes);$i++) { ?>  
-		<tr>
-			<td><?=$clientes[$i]['nome']?></td>
-			<td><?=$clientes[$i]['email']?></td>
-			<td><?=$clientes[$i]['tel']?></td>
-			<td><?=number_format($clientes[$i]['saldo'], 2, ',', '.')?></td>
-			<td>
-				<button data-nomeuser="<?=$clientes[$i]['nome']?>" data-iduser="<?=$clientes[$i]['id']?>"  data-toggle="modal" data-target="#creditar_modal" type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span></button>
-			</td>
-			<td>
-				<button type="button" class="btn btn-default" onclick="location.href='?page=editaCliente&id=<?=$clientes[$i]['id']?>'"><span class="glyphicon glyphicon-pencil"></span></button>
-			</td>
-			<td>
-				<button type="button" class="btn btn-default" onclick="ajaxExcluiCliente(<?=$clientes[$i]['id']?>)"><span class="glyphicon glyphicon-remove-sign"></span></button>
-			</td>
-		</tr>
-		<?php } ?>  
-	</tbody>
-</table>
+<div class="divqnt"><span><b><?=$clientes_qnt?></b></span> cliente(s)</div>
+<div class="form-group " style="margin-top:30px;">
+	<input type="text" class="form-control" placeholder="Filtrar por nome" id="filtro_nome_cliente" />
+</div>
+<div id="cliente_list" class="form-group">
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>Email</th>
+				<th>Fone</th>
+				<th colspan="3">Crédito(R$)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php for($i=0;$i<sizeof($clientes);$i++) { ?>  
+			<tr>
+				<td><?=$clientes[$i]['nome']?></td>
+				<td><?=$clientes[$i]['email']?></td>
+				<td><?=$clientes[$i]['tel']?></td>
+				<td><?=number_format($clientes[$i]['saldo'], 2, ',', '.')?></td>
+				<td>
+					<button data-nomeuser="<?=$clientes[$i]['nome']?>" data-iduser="<?=$clientes[$i]['id']?>"  data-toggle="modal" data-target="#creditar_modal" type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+				</td>
+				<td>
+					<button type="button" class="btn btn-default" onclick="location.href='?page=editaCliente&id=<?=$clientes[$i]['id']?>'"><span class="glyphicon glyphicon-pencil"></span></button>
+				</td>
+				<td>
+					<button type="button" class="btn btn-default" onclick="ajaxExcluiCliente(<?=$clientes[$i]['id']?>)"><span class="glyphicon glyphicon-remove"></span></button>
+				</td>
+			</tr>
+			<?php } ?>  
+		</tbody>
+	</table>
+</div>
 <div class="modal fade" id="creditar_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog w450">
     <div class="modal-content">
@@ -119,8 +214,15 @@ $clientes = Cliente::getClientes();
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary" onclick="ajaxCreditarUsuario()">Salvar</button>
+        <button type="button" class="btn btn-primary" onclick="ajaxCreditarUsuario()" id="btn_creditar">Salvar</button>
       </div>
     </div>
   </div>
+</div>
+<div class="divCentro centralizado">
+	<ul class="pagination" id="paginacao" data-treg="<?=$clientes_qnt?>">
+	  <?php for($i=1;$i<=$qnt_page;$i++) { ?>
+		<li><a href="#"><?=$i?></a></li>
+	  <?php } ?>
+	</ul>
 </div>

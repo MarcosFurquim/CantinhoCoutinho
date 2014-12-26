@@ -1,7 +1,6 @@
 <?php
 require_once ('../model/Venda.php');
 
-var_dump($_POST);
 if($_POST['cadastro']=='S') {
 	$venda = new Venda($_POST['cliente'], '');
 	require_once ('../model/Cliente.php');

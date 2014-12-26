@@ -7,7 +7,6 @@ $clientes = Cliente::getClientes();
 <script>
 	$(function() {
 		$("#nome_cliente").hide();
-		numeral.language('pt-br');
 	});
 	
 	function adicionaProdutoTrigger() {
@@ -57,8 +56,7 @@ $clientes = Cliente::getClientes();
 		//$("#prod_nome").text(prod.options[prod.selectedIndex].text);
 		//$("#prod_preco").text(prod.value);
 		$("#cli_nome").text($(cliente).find("option:selected").text());
-		console.log($(cliente).find("option:selected").data('saldo'));
-		$("#cli_saldo").text(numeral($(cliente).find("option:selected").data('saldo')).format('$0,0.00'));
+		$("#cli_saldo").text(numeral($(cliente).find("option:selected").data('saldo')).format('0,0.00'));
 		$("[name='hdn_cli_saldo']").val($(cliente).find("option:selected").data('saldo'));
 		$("#detalheCliente").show();
 	
@@ -122,17 +120,37 @@ $clientes = Cliente::getClientes();
 	}
 	
 		function validaVenda() {
-			if($("[name='hdn_cli_saldo']").val() != -1)
+			// console.log("hdn saldo:"+$("[name='hdn_cli_saldo']").val());
+			// console.log("rd input:"+$("input[name=cadastro]:checked").val());
+			// console.log("nome cliente input:"+$("#nome_cliente").val());
+			// console.log("cliente select:"+$("#cliente").val());
+			// console.log("div produtos:"+$("#detalheProduto").is(':visible'));
+			
+			// console.log("1:"+($("[name='hdn_cli_saldo']").val() != -1 && $("[name='hdn_cli_saldo']").val() != ""));
+			// console.log("2:"+($("input[name=cadastro]:checked").val() == 'N' && $("#nome_cliente").val() == ""));
+			// console.log("3:"+($("input[name=cadastro]:checked").val() == 'S' && $("#cliente").val()==null));
+			// console.log("4:"+(!$("#detalheProduto").is(':visible')));
+			
+			if($("[name='hdn_cli_saldo']").val() != -1 && $("[name='hdn_cli_saldo']").val() != "")
 			{
-					var saldo_cli = parseFloat($("[name='hdn_cli_saldo']").val());
-					var total_venda = parseFloat($("[name='hdn_total_valor_venda']").val());
-					console.log(saldo_cli);
-					console.log(total_venda);
-					console.log(saldo_cli < total_venda);
+				var saldo_cli = parseFloat($("[name='hdn_cli_saldo']").val());
+				var total_venda = parseFloat($("[name='hdn_total_valor_venda']").val());
 				if(saldo_cli < total_venda) {
 					alert('Saldo do cliente insuficiente para venda');
 					return false;
 				}
+			}
+			if($("input[name=cadastro]:checked").val() == 'N' && $("#nome_cliente").val() == "") {
+				alert('Digite o nome do cliente');
+				return false;
+			}
+			else if($("input[name=cadastro]:checked").val() == 'S' && $("#cliente").val()==null) {
+				alert('Escolha o cliente');
+				return false;
+			}
+			else if(!$("#detalheProduto").is(':visible')) {
+				alert('Escolha ao menos um produto para venda');
+				return false;
 			}
 			return true;
 		}
@@ -204,7 +222,7 @@ $clientes = Cliente::getClientes();
 		<div class="selectContainer">
 			<label class="control-label field">Cliente:&nbsp;</label>
 			<select class="form-control"  name="cliente" id="cliente" onchange="mostraInfoCliente(this)">
-				<option value="" selected="selected" disabled >Selecione o Cliente</option>
+				<option value="-1" selected="selected" disabled >Selecione o Cliente</option>
 				<?php for($i=0;$i<sizeof($clientes);$i++) { ?>
 					<option value="<?=$clientes[$i]['id']?>" data-saldo="<?=$clientes[$i]['saldo']?>"><?=$clientes[$i]['nome']?></option>
 				<?php } ?>
@@ -239,15 +257,15 @@ $clientes = Cliente::getClientes();
 	
 	<div id="detalheCliente" class=" col-sm-offset-3 col-sm-5 ">
 		<b>Nome:&nbsp;</b><span id="cli_nome"></span><br/>
-		<b>Crédito:&nbsp;</b><span id="cli_saldo"></span><br/>
+		<b>Crédito(R$):&nbsp;</b><span id="cli_saldo"></span><br/>
 	</div>
 	<div id="detalheProduto" class=" col-sm-offset-3 col-sm-5 ">
 		<table id="ProdutosAdicionados" class="table">
 			<thead>
 				<th>Nome</th>
-				<th>Preço</th>
+				<th>Preço(R$)</th>
 				<th>Quantidade</th>
-				<th>Preço Total</th>
+				<th>Preço Total(R$)</th>
 			</thead>
 			<tbody>
 			</tbody>
@@ -259,7 +277,7 @@ $clientes = Cliente::getClientes();
 	</div>
 	<div class="form-group"  style="display:block; margin-top: 30px;">
 		<label class="control-label field">&nbsp;</label>
-		<button type="submit" class="btn btn-success">Cadastrar</button>
+		<button type="submit" class="btn btn-success">Vender</button>
 		<input type="hidden"  name="hdn_cli_saldo" value="" />
 		<input type="hidden"  name="hdn_total_valor_venda" value="" />
 	</div>

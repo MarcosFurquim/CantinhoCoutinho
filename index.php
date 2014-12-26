@@ -8,7 +8,6 @@ require_once ('./lib/libdba.php');
 		<title>Cantina Tiago</title>
 		<script src="./js/jquery-1.11.1.min.js"></script>
 		<script src="./js/bootstrap-3.3.1-dist/dist/js/bootstrap.min.js"></script>
-		<script src="./js/funcoes.js"></script>
 		<link rel="stylesheet" href="./js/bootstrap-3.3.1-dist/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="./js/bootstrap-3.3.1-dist/dist/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="./css/cantina.css">
@@ -20,6 +19,7 @@ require_once ('./lib/libdba.php');
 		<script src="./js/numeral/min/numeral.min.js"></script>
 		<script src="./js/numeral/min/languages.min.js"></script>
 		<script src="./js/numeral/min/languages/pt-br.min.js"></script>
+		<script src="./js/funcoes.js"></script>
 	</head>
 	<body>
 		<div class="container-narrow">
@@ -46,6 +46,11 @@ require_once ('./lib/libdba.php');
 					//header( "Location: 404.php" );
 				} ?>
 			</div>
+		</div>
+		<div id="footer">
+			<p style="font-size: 11px">Sistema Desenvolvido por Marcos Furquim<br>
+						Email:<a href="mailto:markinfurkin@gmail.com?Subject=Sistema%20Cantina" target="_top">markinfurkin@gmail.com</a>
+			</p>	
 		</div>
 	</body>
 </html>

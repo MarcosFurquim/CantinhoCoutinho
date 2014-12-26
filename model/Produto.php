@@ -11,7 +11,7 @@ class Produto {
 		$this->descricao = $descricao;
 	}
 	
-	public function cadastaProduto() {
+	public function cadastraProduto() {
 		require_once ('../lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$last_user_id = $conexaoCantina->insert("produto", [
@@ -28,16 +28,20 @@ class Produto {
 		return $produto;
 	}
 	
+	
 	public static function getProdutos() {
 		//simular sobrecarga de metodo
 		//arg[0]= filtro por nome 
+		//arg[1]= index paginacao
 		$conexaoCantina = conectaCantina();
 		$numArgs = (int)func_num_args();
         $args = func_get_args();
-        if($numArgs == 1 && (strlen($args[0]))>0){
-			$produto = $conexaoCantina->select("produto", "*",["nome[~]" =>"%".$args[0]."%"]);
+		 if($numArgs == 2){
+			$produto = $conexaoCantina->select("produto", "*",["nome[~]" =>"%".$args[0]."%", "LIMIT" => [$args[1], 10],"ORDER" => "nome"]);
+		} else if($numArgs == 1){
+			$produto = $conexaoCantina->select("produto", "*",["nome[~]" =>"%".$args[0]."%","ORDER" => "nome"]);
 		} else {
-			$produto = $conexaoCantina->select("produto", "*");
+			$produto = $conexaoCantina->select("produto", "*",["ORDER" => "nome"]);
 		}
 		//var_dump($conexaoCantina->log());
 		return $produto;
@@ -66,6 +70,12 @@ class Produto {
 		$preco = $conexaoCantina->get("produto", "preco",[
 		"id" =>$idProduto]);
 		return $preco;
+	}
+	
+	public static function getCount() {
+		$conexaoCantina = conectaCantina();
+		$count = $conexaoCantina->count("produto");
+		return $count;
 	}
 }
 ?>

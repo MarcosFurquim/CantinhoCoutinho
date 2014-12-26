@@ -3,7 +3,7 @@ require_once ('../model/produto.php');
 $preco = str_replace(",",".",str_replace(".","",$_POST['preco_pro']));
 $produto = new Produto($_POST['nome_pro'],$preco,$_POST['desc_prod']);
 if(isset($_POST['btn_cadastrar'])) {
-	if($produto->cadastaProduto()) {
+	if($produto->cadastraProduto()) {
 		echo "<script>alert('Cadastro efetuado com sucesso');
 				location.assign('../?page=produto');</script>";
 	}

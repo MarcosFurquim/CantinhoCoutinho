@@ -13,4 +13,5 @@
 
 $( document ).ready(function() {
 mudaClasseMenuAtivado();
+numeral.language('pt-br');
 });
