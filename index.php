@@ -5,7 +5,8 @@ require_once ('./lib/libdba.php');
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Cantina Tiago</title>
+		<link rel="icon" type="image/png" href="./img/favicon.png" />
+		<title>Cantinho do Coutinho</title>
 		<script src="./js/jquery-1.11.1.min.js"></script>
 		<script src="./js/bootstrap-3.3.1-dist/dist/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="./js/bootstrap-3.3.1-dist/dist/css/bootstrap.min.css">
@@ -22,15 +23,26 @@ require_once ('./lib/libdba.php');
 		<script src="./js/funcoes.js"></script>
 	</head>
 	<body>
-		<div class="container-narrow">
+		<div class="container-narrow trasparente">
 			<div>
 				<ul class="nav nav-pills">
 				  <li role="presentation"><a href="?page=venda">Venda</a></li>
-				  <li role="presentation"><a href="?page=cliente">Clientes</a></li>
-				  <li role="presentation"><a href="?page=produto">Produtos</a></li>
+				  <li role="presentation"><a href="?page=entrada">Despesa</a></li>
+				  <li role="presentation" class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+					  Cadastros <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li role="presentation"><a href="?page=fornecedor">Fornecedores</a></li>
+						<li role="presentation"><a href="?page=cliente">Clientes</a></li>
+						<li role="presentation"><a href="?page=produto">Produtos</a></li>
+					</ul>
+				  </li>
 				  <li role="presentation"><a href="?page=relatorio">Relatórios</a></li>
 				</ul>
 			</div>
+			<?php include( "./include/cliente_aviso.php" ); ?>
+			
 			<div class="container-contents">
 				<?php
 				// Aqui ele vai verificar se existe um parâmetro para $_GET na URL.
@@ -48,7 +60,7 @@ require_once ('./lib/libdba.php');
 			</div>
 		</div>
 		<div id="footer">
-			<p style="font-size: 11px">Sistema Desenvolvido por Marcos Furquim<br>
+			<p style="font-size: 11px">Sistema Desenvolvido por Marcos Furquim - Versão 2.0<br>
 						Email:<a href="mailto:markinfurkin@gmail.com?Subject=Sistema%20Cantina" target="_top">markinfurkin@gmail.com</a>
 			</p>	
 		</div>

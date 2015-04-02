@@ -2,7 +2,7 @@
 require_once ('../lib/libdba.php');
 require_once('../model/Venda.php');
 $index = ($_GET['pag']-1)*10;
-$vendas = Venda::getVendas(inverteDataBD($_GET['dti']),inverteDataBD($_GET['dtf']),$index);
+$vendas = Venda::getVendas(inverteDataBD($_GET['dti']),inverteDataBD($_GET['dtf']),$_GET['pid'],$index);
 $vendas_qnt = Venda::getCount();
 for($i=0;$i<sizeof($vendas);$i++) {
 	$vendas[$i]['data'] = ConverteDataBD($vendas[$i]['data']);

@@ -19,6 +19,7 @@
 			  <input type="text" class="form-control" name="tel_cli" id="tel_cli" placeholder="Telefone" />
 			</div>
 		</div>
+		<hr/>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<input type="submit" name="btn_cadastrar" class="btn btn btn-success" value="Cadastrar" />

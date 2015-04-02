@@ -4,9 +4,22 @@ require_once('./model/Cliente.php');
 $clientes = Cliente::getClientes();
 
 ?>
+<script src="./js/datapicker-13.1/js/bootstrap-datepicker.js"></script>
+<script src="./js/datapicker-13.1/js/locales/bootstrap-datepicker.pt-BR.js"></script>
+<link rel="stylesheet" href="./js/datapicker-13.1/css/datepicker3.css">
 <script>
 	$(function() {
 		$("#nome_cliente").hide();
+		//$("#campoData").mask("99/99/9999");
+		$("#campoData").datepicker({
+			todayBtn: "linked",
+			clearBtn: true,
+			language: "pt-BR",
+			autoclose: true,
+			todayHighlight: true
+		});
+		$("#campoData").prop('disabled', true);
+		//var d = new Date();
 	});
 	
 	function adicionaProdutoTrigger() {
@@ -44,11 +57,26 @@ $clientes = Cliente::getClientes();
 			$("#cliente").show();
 			$("#nome_cliente").hide();
 			$("[name='hdn_cli_saldo']").val($(cliente).find("option:selected").data('saldo'));
+			$("[name='pago']").prop('disabled',false);
 		} else if(rd.value=="N") {
 			$("#cliente").hide();
 			$("#nome_cliente").show();
 			$("[name='hdn_cli_saldo']").val(-1);
+			$("#detalheCliente").hide();
+			$("[name='pago']").prop('disabled',true);
 				
+		}
+	}
+	
+	function modificaData(rd) {
+		if(rd.value=="S") {
+			 //$("#campoData").hide();
+			 $("#campoData").prop('disabled', true);
+			 //var d = new Date();
+			 //$("#campoData").val(d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear())
+			 $("#campoData").val('<?=date("d/m/Y")?>');
+		} else if(rd.value=="N") {
+			$("#campoData").prop('disabled', false);
 		}
 	}
 	
@@ -130,14 +158,22 @@ $clientes = Cliente::getClientes();
 			// console.log("2:"+($("input[name=cadastro]:checked").val() == 'N' && $("#nome_cliente").val() == ""));
 			// console.log("3:"+($("input[name=cadastro]:checked").val() == 'S' && $("#cliente").val()==null));
 			// console.log("4:"+(!$("#detalheProduto").is(':visible')));
-			
+			if($("input[name=data]:checked").val() == 'N') {
+				var data_valida = $("#campoData").val().split("/");
+				if(data_valida[0].length!=2 || data_valida[1].length!=2 || data_valida[2].length!=4) {
+					alert("Data inválida");
+					return false;
+				}
+				
+			}
 			if($("[name='hdn_cli_saldo']").val() != -1 && $("[name='hdn_cli_saldo']").val() != "")
 			{
 				var saldo_cli = parseFloat($("[name='hdn_cli_saldo']").val());
 				var total_venda = parseFloat($("[name='hdn_total_valor_venda']").val());
 				if(saldo_cli < total_venda) {
-					alert('Saldo do cliente insuficiente para venda');
-					return false;
+					return confirm('O saldo do cliente é insuficiente para venda\nContinuar assim mesmo?');
+					//alert('Saldo do cliente insuficiente para venda');
+					//return false;
 				}
 			}
 			if($("input[name=cadastro]:checked").val() == 'N' && $("#nome_cliente").val() == "") {
@@ -154,6 +190,7 @@ $clientes = Cliente::getClientes();
 			}
 			return true;
 		}
+
 </script>
 <style>
 	#nome_cliente {
@@ -166,6 +203,7 @@ $clientes = Cliente::getClientes();
 		margin-left: auto;
 		margin-right: auto;
 		margin-top: 30px;
+		margin-bottom: 15px;
 		width: auto;
 	}
 	#detalheCliente {
@@ -201,6 +239,10 @@ $clientes = Cliente::getClientes();
 			overflow: visible;
 			padding: 10px 0;
 			box-shadow: 0 2px 4px rgba(0,0,0,.2);
+		}
+		#campoData {
+			display: inline;
+			width: 100px;
 		}
 </style>
 <div>
@@ -241,7 +283,7 @@ $clientes = Cliente::getClientes();
 		<div>
 			<div id="imaginary_container"> 
 				<div class="input-group stylish-input-group">
-					<input type="text" class="form-control"  placeholder="Busca Produto" onfocus="mostraWidgetProduto(this)" onkeyup="mostraWidgetProduto(this)" name="buscaProduto" >
+					<input type="text" autocomplete="off" class="form-control"  placeholder="Busca Produto" onfocus="mostraWidgetProduto(this)" onkeyup="mostraWidgetProduto(this)" name="buscaProduto" >
 					<span class="input-group-addon">
 						
 							<span class="glyphicon glyphicon-search"></span>
@@ -275,6 +317,30 @@ $clientes = Cliente::getClientes();
 			</tfoot>
 		</table>
 	</div>
+	<div class="form-group">
+        <label class="control-label">Data</label>
+        <div>
+            <label class="radio-inline">
+               <input type="radio" name="data" id="rd_dt_hj" value="S"  checked onclick="modificaData(this)" /> Hoje
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="data" id="rd_sem_cadastro" value="N" onclick="modificaData(this)" /> Data específica:
+            </label>
+			<input type="text" class="form-control" name="campoData" id="campoData" value="<?=date('d/m/Y')?>"/>
+        </div>
+    </div>
+	<div class="form-group">
+        <label class="control-label">Pago</label>
+        <div>
+            <label class="radio-inline">
+                <input type="radio" name="pago" value="N"  checked /> Não
+            </label>
+            <label class="radio-inline">
+               <input type="radio" name="pago" value="S" /> Sim
+            </label>
+        </div>
+    </div>
+	<hr/>
 	<div class="form-group"  style="display:block; margin-top: 30px;">
 		<label class="control-label field">&nbsp;</label>
 		<button type="submit" class="btn btn-success">Vender</button>

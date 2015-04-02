@@ -110,12 +110,22 @@ class Cliente {
 	public static function creditaCliente($idCliente,$valor,$tipo) {
 		require_once ('../lib/libdba.php');
 		$conexaoCantina = conectaCantina();
-		$last_credito_id = $conexaoCantina->insert("cliente_credito", [
-		"id_cliente" => $idCliente,
-		"valor" => $valor,
-		"tipo" => $tipo,
-		"#data" =>  'NOW()'
-		]);
+		$last_credito_id = 0;
+		if(@$_POST['data']=='S' || !@$_POST['data']) {
+			$last_credito_id = $conexaoCantina->insert("cliente_credito", [
+			"id_cliente" => $idCliente,
+			"valor" => $valor,
+			"tipo" => $tipo,
+			"#data" =>  'NOW()'
+			]);
+		} else if(@$_POST['data']=='N') {
+			$last_credito_id = $conexaoCantina->insert("cliente_credito", [
+			"id_cliente" => $idCliente,
+			"valor" => $valor,
+			"tipo" => $tipo,
+			"data" => inverteDataBD($_POST['campoData'])
+			]);
+		}
 		return $last_credito_id;
 		
 	}

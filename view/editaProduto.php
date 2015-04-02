@@ -28,6 +28,7 @@ $produto = Produto::getProduto($_GET['id']);
 			  <input type="text" class="form-control" name="desc_prod" id="desc_prod" placeholder="Descrição do Produto" value="<?=$produto['descricao'] ?>" />
 			</div>
 		</div>
+		<hr/>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<input type="hidden" name="id_produto" value="<?=$_GET['id'] ?>" />

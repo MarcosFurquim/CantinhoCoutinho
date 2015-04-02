@@ -5,6 +5,8 @@ $index = ($_GET['pag']-1)*10;
 $cliente_hist = Cliente::getHistoricoCliente($_GET['id'],$index);
 for($i=0;$i<sizeof($cliente_hist);$i++) {
 	$cliente_hist[$i]['data'] = ConverteDataBD($cliente_hist[$i]['data']);
+	$cliente_hist[$i]['data_hora'] = explode(" ", $cliente_hist[$i]['data'])[0];
+	$cliente_hist[$i]['data_dia'] = explode(" ", $cliente_hist[$i]['data'])[1];
 }
 ?>
 <script>
@@ -24,7 +26,7 @@ for($i=0;$i<sizeof($cliente_hist);$i++) {
 	<tbody>
 		<?php for($i=0;$i<sizeof($cliente_hist);$i++) { ?>
 			<tr class="<?php echo ($cliente_hist[$i]['tipo']=='C')? 'success':'danger';?>">
-				<td><?=$cliente_hist[$i]['data']?></td>
+				<td><?=$cliente_hist[$i]['data_hora']?><br/><?=$cliente_hist[$i]['data_dia']?></td>
 				<td><?=number_format($cliente_hist[$i]['valor'], 2, ',', '.')?></td>
 				<td><?php echo ($cliente_hist[$i]['tipo']=='C')? 'Crédito':'Débito';?></td>
 			</tr>

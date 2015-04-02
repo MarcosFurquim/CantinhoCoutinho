@@ -24,6 +24,7 @@
 			  <input type="text" class="form-control" name="desc_prod" id="desc_prod" placeholder="Descrição do Produto" />
 			</div>
 		</div>
+		<hr/>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<input type="submit" name="btn_cadastrar" class="btn btn btn-success" value="Cadastrar" />

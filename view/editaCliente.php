@@ -23,6 +23,7 @@ $cliente = Cliente::getCliente($_GET['id']);
 			  <input type="text" class="form-control" name="tel_cli" id="tel_cli" placeholder="Telefone" value="<?=$cliente['tel']; ?>" />
 			</div>
 		</div>
+		<hr/>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<input type="hidden" name="id_cliente" value="<?=$_GET['id'] ?>" />

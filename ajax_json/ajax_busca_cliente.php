@@ -23,7 +23,7 @@ $clientes = Cliente::getClientes($_GET['nome'],$index);
     </thead>
 	<tbody>
 		<?php for($i=0;$i<sizeof($clientes);$i++) { ?>  
-		<tr>
+		<tr <?php echo ($clientes[$i]['saldo'] < 0)?"class='danger'":""; ?>>
 			<td><?=$clientes[$i]['nome']?></td>
 			<td><?=$clientes[$i]['email']?></td>
 			<td><?=$clientes[$i]['tel']?></td>

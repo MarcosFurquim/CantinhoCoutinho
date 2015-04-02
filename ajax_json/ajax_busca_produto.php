@@ -17,7 +17,7 @@ $produtos = Produto::getProdutos($_GET['nome'],$index);
         <tr>
             <th>Nome</th>
             <th>Preço(R$)</th>
-            <th>Decrição</th>
+            <th>Descrição</th>
             <th colspan="2">&nbsp;</th>
         </tr>
     </thead>

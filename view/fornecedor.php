@@ -1,32 +1,32 @@
 ﻿<?php
-require_once './model/Produto.php';
-$produtos = Produto::getProdutos("",0);
-$produtos_qnt = Produto::getCount();
+require_once './model/Fornecedor.php';
+$fornecedores = Fornecedor::getFornecedores("",0);
+$fornecedores_qnt = Fornecedor::getCount();
 
-$qnt_page = $produtos_qnt/10;
+$qnt_page = $fornecedores_qnt/10;
 $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qnt_page, 0, 1);
 ?>
 <script>
 	$(function() {
 		$('#paginacao a:contains(1)').parent().toggleClass("active");
-		$('#filtro_nome_produto').keyup(function() {
+		$('#filtro_nome_fornecedor').keyup(function() {
 			var img = $("<img />").attr('src', './img/ajax-loader.gif').attr('style','margin: 0px 50%;');
 			$.ajax({
-					url: "./ajax_json/ajax_busca_produto.php",
+					url: "./ajax_json/ajax_busca_fornecedor.php",
 					type: "GET",
 					data: 'nome='+$(this).val()+'&pag=1',
 					beforeSend: function(){
-						$("#produto_list").html("");
-						$("#produto_list").append(img)
+						$("#fornecedor_list").html("");
+						$("#fornecedor_list").append(img)
 					},
 					complete: function(){
-						//$("#produto_list").append(img);
+						//$("#fornecedor_list").append(img);
 					},
 					success:function(result){
-						$("#produto_list").html(result);
+						$("#fornecedor_list").html(result);
 						//caso o filtro estiver vazio, entao qnt é a mesma da original, senao pega de qts voltaram
 						var qnt_reg;
-						if($("#filtro_nome_produto").val()=="") {
+						if($("#filtro_nome_fornecedor").val()=="") {
 							qnt_reg = parseInt($("#paginacao").data("treg"));
 						} else {
 							qnt_reg = $("table tbody tr").length;
@@ -56,18 +56,18 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 				e.preventDefault();
 				var img = $("<img />").attr('src', './img/ajax-loader.gif').attr('style','margin: 0px 50%;');
 				$.ajax({
-						url: "./ajax_json/ajax_busca_produto.php",
+						url: "./ajax_json/ajax_busca_fornecedor.php",
 						type: "GET",
-						data: 'nome='+$('#filtro_nome_produto').val()+'&pag='+$(this).html(),
+						data: 'nome='+$('#filtro_nome_fornecedor').val()+'&pag='+$(this).html(),
 						beforeSend: function(){
-							$("#produto_list").html("");
-							$("#produto_list").append(img)
+							$("#fornecedor_list").html("");
+							$("#fornecedor_list").append(img)
 						},
 						complete: function(){
-							//$("#produto_list").append(img);
+							//$("#fornecedor_list").append(img);
 						},
 						success:function(result){
-							$("#produto_list").html(result);
+							$("#fornecedor_list").html(result);
 						}
 						}).done(function(result) {
 							//alert(result);
@@ -77,12 +77,12 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 		paginacao();
 	});
 	
-	function ajaxExcluiProduto(idProduto) {
-		if(confirm('Deseja realmente excluir este produto?')) {
+	function ajaxExcluiFornecedor(idFornecedor) {
+		if(confirm('Deseja realmente excluir este fornecedor?')) {
 			$.ajax({
-					url: "./ajax_json/ajax_exclui_produto.php",
+					url: "./ajax_json/ajax_exclui_fornecedor.php",
 					type: "GET",
-					data: 'id='+idProduto,
+					data: 'id='+idFornecedor,
 					beforeSend: function(){
 						//$("#carregando").show('fast');
 						//$("#principal_div").html("");
@@ -93,7 +93,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 					},
 					success:function(result){
 						if(result>0) {
-							alert('exclusão do produto efetuado com sucesso!');
+							alert('exclusão do fornecedor efetuado com sucesso!');
 							location.reload();
 						}
 					}
@@ -103,32 +103,30 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 		}
 	}
 </script>
-<div class="divbotao_novo"><button class="btn btn-default btn-sm" onclick="location.href='?page=CadastroProduto'">Novo</button></div>
-<div class="divqnt"><span><b><?=$produtos_qnt?></b></span> produto(s)</div>
+<div class="divbotao_novo"><button class="btn btn-default btn-sm" onclick="location.href='?page=CadastroFornecedor'">Novo</button></div>
+<div class="divqnt"><span><b><?=$fornecedores_qnt?></b></span> fornecedor(es)</div>
 <div class="form-group " style="margin-top:30px;">
-	<input type="text" class="form-control" placeholder="Filtrar por nome" id="filtro_nome_produto" />
+	<input type="text" class="form-control" placeholder="Filtrar por nome" id="filtro_nome_fornecedor" />
 </div>
-<div id="produto_list" class="form-group">
+<div id="fornecedor_list" class="form-group">
 	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
 				<th>Nome</th>
-				<th>Preço(R$)</th>
 				<th>Descrição</th>
 				<th colspan="2">&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php for($i=0;$i<sizeof($produtos);$i++) { ?>  
+			<?php for($i=0;$i<sizeof($fornecedores);$i++) { ?>  
 			<tr>
-				<td><?=$produtos[$i]['nome']?></td>
-				<td><?=number_format($produtos[$i]['preco'], 2, ',', '.')?></td>
-				<td><?=$produtos[$i]['descricao']?></td>
+				<td><?=$fornecedores[$i]['nome']?></td>
+				<td><?=$fornecedores[$i]['descricao']?></td>
 				<td>
-					<button type="button" class="btn btn-default" onclick="location.href='?page=editaProduto&id=<?=$produtos[$i]['id']?>'"><span class="glyphicon glyphicon-pencil"></span></button>
+					<button type="button" class="btn btn-default" onclick="location.href='?page=editaFornecedor&id=<?=$fornecedores[$i]['id']?>'"><span class="glyphicon glyphicon-pencil"></span></button>
 				</td>
 				<td>
-					<button type="button" class="btn btn-default" onclick="ajaxExcluiProduto(<?=$produtos[$i]['id']?>)"><span class="glyphicon glyphicon-remove"></span></button>
+					<button type="button" class="btn btn-default" onclick="ajaxExcluiFornecedor(<?=$fornecedores[$i]['id']?>)"><span class="glyphicon glyphicon-remove"></span></button>
 				</td>
 			</tr>
 			<?php } ?>  
@@ -137,7 +135,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 </div>
 <hr/>
 <div class="divCentro centralizado">
-	<ul class="pagination" id="paginacao" data-treg="<?=$produtos_qnt?>">
+	<ul class="pagination" id="paginacao" data-treg="<?=$fornecedores_qnt?>">
 	  <?php for($i=1;$i<=$qnt_page;$i++) { ?>
 		<li><a href="#"><?=$i?></a></li>
 	  <?php } ?>

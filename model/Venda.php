@@ -13,11 +13,23 @@ class Venda {
 	public function cadastraVenda() {
 		require_once ('../lib/libdba.php');
 		$conexaoCantina = conectaCantina();
-		$last_venda_id = $conexaoCantina->insert("venda", [
-		"cliente_id" => $this->cliente_id,
-		"cliente_nome" => $this->cliente_nome,
-		"#data" => 'NOW()'
-		]);
+		//simular sobrecarga de metodo
+		//arg[0]= last record credito_cliente
+		$numArgs = (int)func_num_args();
+		$args = func_get_args();
+		if($_POST['data']=='S') {
+			$last_venda_id = $conexaoCantina->insert("venda", [
+			"cliente_id" => $this->cliente_id,
+			"cliente_nome" => $this->cliente_nome,
+			"#data" => 'NOW()'
+			]);
+		} else if($_POST['data']=='N') {
+			$last_venda_id = $conexaoCantina->insert("venda", [
+			"cliente_id" => $this->cliente_id,
+			"cliente_nome" => $this->cliente_nome,
+			"data" => inverteDataBD($_POST['campoData'])
+			]);
+		}
 		$precototal = 0;
 		require_once ('../model/Produto.php');
 		foreach($_POST["qnt"] as $id => $qnt) {
@@ -33,6 +45,19 @@ class Venda {
 		$conexaoCantina->update("venda", [
 		"valor" => $precototal
 		],["id" =>$last_venda_id]);
+		if($numArgs == 1){
+			$conexaoCantina->update("cliente_credito", [
+			"id_venda" => $last_venda_id
+			],["id" =>$args[0]]);
+		} else if ($numArgs == 2) {
+			$conexaoCantina->update("cliente_credito", [
+			"id_venda" => $last_venda_id
+			],["id" =>$args[0]]);
+			$conexaoCantina->update("cliente_credito", [
+			"id_venda" => $last_venda_id
+			],["id" =>$args[1]]);
+		}
+		
 			//var_dump( $conexaoCantina->log() );
 		return $last_venda_id;
 	}
@@ -41,7 +66,8 @@ class Venda {
 		//simular sobrecarga de metodo
 		//arg[0]= data inicio
 		//arg[1]= data fim
-		//arg[2]= index paginacao
+		//arg[2]= filtro por produto
+		//arg[3]= index paginacao
 		$numArgs = (int)func_num_args();
         $args = func_get_args();
 		$conexaoCantina = conectaCantina();
@@ -57,9 +83,20 @@ class Venda {
 					if(v.cliente_id<>0,c.nome, cliente_nome) as cliente
 					from venda v
 					left join cliente c on(v.cliente_id=c.id)
+					inner join venda_produto vp on(v.id=vp.id_venda)
 					 where     date(data) >= '$args[0]' and date(data) <= '$args[1]'
+					 and vp.produto_id=$args[2]
+					order by v.data desc";
+		} else if($numArgs == 4){
+			$query = "select v.*, c.nome,
+					if(v.cliente_id<>0,c.nome, cliente_nome) as cliente
+					from venda v
+					left join cliente c on(v.cliente_id=c.id)
+					inner join venda_produto vp on(v.id=vp.id_venda)
+					 where     date(data) >= '$args[0]' and date(data) <= '$args[1]'
+					 and vp.id=$args[2]
 					order by v.data desc
-					LIMIT $args[2],10";
+					LIMIT $args[3],10";
 		} else {
 			$query = "select v.*, c.nome,
 					if(v.cliente_id<>0,c.nome, cliente_nome) as cliente
@@ -67,6 +104,18 @@ class Venda {
 					left join cliente c on(v.cliente_id=c.id)
 					order by v.data desc";
 		}
+		//echo $query;
+		$vendas = $conexaoCantina->query($query)->fetchAll();
+		return $vendas;
+	}
+	
+	public static function getVendasAgrupado($dataI, $dataF, $Agrupamento) {
+		$conexaoCantina = conectaCantina();
+		$query = "select sum(v.valor) as valor,date(v.data) AS dataf
+			from venda v 
+			where date(data) >= '$dataI' and date(data) <= '$dataF'
+			 group by dataf
+			order by v.data desc";
 		//echo $query;
 		$vendas = $conexaoCantina->query($query)->fetchAll();
 		return $vendas;
@@ -85,5 +134,13 @@ class Venda {
 		$conexaoCantina = conectaCantina();
 		$count = $conexaoCantina->count("venda");
 		return $count;
+	}
+	
+	public static function excluiVenda($idVenda) {
+		$conexaoCantina = conectaCantina();
+		$rows_affected = $conexaoCantina->delete("cliente_credito", ["id_venda" =>$idVenda]);
+		$rows_affected = $conexaoCantina->delete("venda_produto", ["id_venda" =>$idVenda]);
+		$rows_affected = $conexaoCantina->delete("venda", ["id" =>$idVenda]);
+		return $rows_affected;
 	}
 }	

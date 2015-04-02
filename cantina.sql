@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.6.17)
-# Date: 2014-12-22 04:51:24
+# Date: 2015-04-02 00:59:17
 # Generator: MySQL-Front 5.2  (Build 5.106)
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -11,8 +11,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES */;
 /*!40103 SET SQL_NOTES='ON' */;
 
-DROP DATABASE IF EXISTS `cantina`;
-CREATE DATABASE `cantina` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `cantina`;
 
 #
@@ -26,7 +24,7 @@ CREATE TABLE `cliente` (
   `email` varchar(100) DEFAULT NULL,
   `tel` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 #
 # Source for table "cliente_credito"
@@ -39,8 +37,35 @@ CREATE TABLE `cliente_credito` (
   `valor` double(7,2) DEFAULT NULL,
   `tipo` char(1) DEFAULT NULL COMMENT 'C = Credito(+), D = Debito(-)',
   `data` datetime DEFAULT NULL,
+  `id_venda` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8;
+
+#
+# Source for table "entrada"
+#
+
+DROP TABLE IF EXISTS `entrada`;
+CREATE TABLE `entrada` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fornecedor_id` varchar(255) DEFAULT NULL,
+  `fornecedor_nome` varchar(100) DEFAULT NULL,
+  `data` datetime DEFAULT NULL,
+  `valor` double(7,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+#
+# Source for table "fornecedor"
+#
+
+DROP TABLE IF EXISTS `fornecedor`;
+CREATE TABLE `fornecedor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(100) DEFAULT NULL,
+  `descricao` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 #
 # Source for table "produto"
@@ -53,7 +78,7 @@ CREATE TABLE `produto` (
   `preco` double(7,2) DEFAULT NULL,
   `descricao` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 #
 # Source for table "venda"
@@ -67,7 +92,7 @@ CREATE TABLE `venda` (
   `data` datetime DEFAULT NULL,
   `valor` double(7,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
 
 #
 # Source for table "venda_produto"

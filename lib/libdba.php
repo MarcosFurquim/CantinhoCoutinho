@@ -8,6 +8,7 @@ function conectaCantina() {
 	'server' => 'localhost',
 	'username' => 'root',
 	'password' => '',
+	'charset' => 'utf8'
 	]);
 	return $conexaoCantina;
 }
@@ -20,10 +21,14 @@ function ConverteDataBD($data) {
 }
 
 function inverteDataBD($data) {
-	//DD/MM/YYYY PARA YYYY-MM-DD
-	$dataE = explode("/",$data);
-	
-	return $dataE[2]."-".$dataE[1]."-".$dataE[0];
+	//DD/MM/YYYY PARA YYYY-MM-DD e YYYY-MM-DD para DD/MM/YYYY
+	if(strpos($data,"/")!==false) {
+		$dataE = explode("/",$data);
+		return $dataE[2]."-".$dataE[1]."-".$dataE[0];
+	} else {
+		$dataE = explode("-",$data);
+		return $dataE[2]."/".$dataE[1]."/".$dataE[0];
+	}
 }
 
 ?>

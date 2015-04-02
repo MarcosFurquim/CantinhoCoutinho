@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class Produto {
 	var $nome;
@@ -76,6 +76,33 @@ class Produto {
 		$conexaoCantina = conectaCantina();
 		$count = $conexaoCantina->count("produto");
 		return $count;
+	}
+	public static function getProdutoRelatorio($dti,$dtf,$id_produto) {
+		$conexaoCantina = conectaCantina();
+		$query = "select  v.data,vp.*,p.id as produto_id,p.nome as produto_nome,
+				if(v.cliente_id<>0,c.nome, cliente_nome) as cliente_nome
+				from venda v
+				left join cliente c on(v.cliente_id=c.id)
+				inner join venda_produto vp on(v.id=vp.id_venda)
+				inner join produto p on(vp.produto_id=p.id)
+				where date(v.data) >= '$dti' and date(v.data) <= '$dtf' 
+				and vp.produto_id = $id_produto
+				order by v.data desc";
+		$rel_produtos = $conexaoCantina->query($query)->fetchAll();
+		return $rel_produtos;
+	}
+	
+	public static function getProdutoRelatorioMaisVendidos($dti,$dtf) {
+		$conexaoCantina = conectaCantina();
+		$query = "select sum(vp.produto_qnt) as total_qnt,p.id as produto_id,p.nome as produto
+				from venda v
+				inner join venda_produto vp on(v.id=vp.id_venda)
+				inner join produto p on(vp.produto_id=p.id)
+				where date(v.data) >= '$dti' and date(v.data) <= '$dtf' 
+				group by produto_id
+				order by total_qnt desc";
+		$rel_produtos = $conexaoCantina->query($query)->fetchAll();
+		return $rel_produtos;
 	}
 }
 ?>

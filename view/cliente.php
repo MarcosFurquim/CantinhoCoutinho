@@ -1,6 +1,6 @@
 ﻿<?php
 require_once('./model/Cliente.php');
-$clientes = Cliente::getClientes();
+$clientes = Cliente::getClientes("",0);
 $clientes_qnt = Cliente::getCount();
 
 $qnt_page = $clientes_qnt/10;
@@ -175,7 +175,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 		</thead>
 		<tbody>
 			<?php for($i=0;$i<sizeof($clientes);$i++) { ?>  
-			<tr>
+			<tr <?php echo ($clientes[$i]['saldo'] < 0)?"class='danger'":""; ?>>
 				<td><?=$clientes[$i]['nome']?></td>
 				<td><?=$clientes[$i]['email']?></td>
 				<td><?=$clientes[$i]['tel']?></td>
@@ -194,6 +194,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 		</tbody>
 	</table>
 </div>
+<hr/>
 <div class="modal fade" id="creditar_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog w450">
     <div class="modal-content">
@@ -204,7 +205,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
       <div class="modal-body">
 	   <form role="form" class="form-horizontal">
           <div class="form-group">
-			<div class="input-group col-sm-4 divCentro">
+			<div class="input-group col-sm-4 divCentro" style="max-width:215px;">
 				<span class="input-group-addon">R$</span>
 				<input type="text" class="form-control" id="valor" placeholder="Valor">
 				<input type="hidden"  id="id_user">
