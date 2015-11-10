@@ -4,23 +4,14 @@ require_once('../model/Venda.php');
 if($_GET['pid']>0) {
 	$vendas = Venda::getVendas(inverteDataBD($_GET['dti']),inverteDataBD($_GET['dtf']),$_GET['pid']);
 } else {
-	if($_GET['agrup'] == "S") {
-		$vendas = Venda::getVendasAgrupado(inverteDataBD($_GET['dti']),inverteDataBD($_GET['dtf']),$_GET['agrup']);
-	} else {
-		$vendas = Venda::getVendas(inverteDataBD($_GET['dti']),inverteDataBD($_GET['dtf']));
-	}
-
+	$vendas = Venda::getVendas(inverteDataBD($_GET['dti']),inverteDataBD($_GET['dtf']));
 }
 $vendas_qnt = Venda::getCount();
 $venda_total = 0;
 for($i=0;$i<sizeof($vendas);$i++) {
-	if($_GET['agrup']== "N") {
-		$vendas[$i]['data'] = ConverteDataBD($vendas[$i]['data']);
-		$vendas[$i]['data_hora'] = explode(" ", $vendas[$i]['data'])[0];
-		$vendas[$i]['data_dia'] = explode(" ", $vendas[$i]['data'])[1];
-	} else {
-		$vendas[$i]['dataf'] = inverteDataBD($vendas[$i]['dataf']);
-	}
+	$vendas[$i]['data'] = ConverteDataBD($vendas[$i]['data']);
+	$vendas[$i]['data_hora'] = explode(" ", $vendas[$i]['data'])[0];
+	$vendas[$i]['data_dia'] = explode(" ", $vendas[$i]['data'])[1];
 	$venda_total += $vendas[$i]['valor'];
 }
 $qnt_page = $vendas_qnt/10;
@@ -93,64 +84,33 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 	
 </script>
 <div id="rel_venda">
-	<?php if($_GET['agrup']== "N") { ?>
-		<table class="table table-hover table-striped" >
-			<thead>
-				<th>Data</th>
-				<th>Cliente</th>
-				<th>Valor(R$)</th>
-				<th>Pago</th>
-				<th>Produtos</th>
-			</thead>
-			<tbody>
-				<?php for($i=0;$i<sizeof($vendas);$i++) { ?>
-					<tr>
-						<td><?=$vendas[$i]['data_hora']?><br/><?=$vendas[$i]['data_dia']?></td>
-						<td><?=$vendas[$i]['cliente']?></td>
-						<td class="valor-venda-td"><?=number_format($vendas[$i]['valor'], 2, ',', '.')?></td>
-						<td class=><?=$vendas[$i]['pago']?></td>
-						<td>
-							<button class="btn btn-default" type="button" data-target="#produtos_modal" data-toggle="modal" data-idvenda="<?=$vendas[$i]['id']?>">
-								<span class=" glyphicon glyphicon-info-sign"></span>
-							</button>
-						</td>
-						<td>
-							<button class="btn btn-default" type="button" onclick="ajaxExcluiVenda(<?=$vendas[$i]['id']?>)">
-								<span class=" glyphicon glyphicon-remove"></span>
-							</button>
-						</td>
-					</tr>
-				<?php } ?>
-			</tbody>
-			<tfoot>
+	<table class="table table-hover table-striped" >
+		<thead>
+			<th>Data</th>
+			<th>Cliente</th>
+			<th>Valor(R$)</th>
+			<th>Produtos</th>
+		</thead>
+		<tbody>
+			<?php for($i=0;$i<sizeof($vendas);$i++) { ?>
 				<tr>
-					<th colspan="2">Total</td>
-					<th colspan="4" id="total_valor_venda"><?=number_format($venda_total, 2, ',', '.')?></th>
-			</tfoot>
-		</table>
-	<?php } else if($_GET['agrup']== "S") { ?>
-		<table class="table table-hover table-striped" >
-			<thead>
-				<th>Data</th>
-				<th>Valor(R$)</th>
-			</thead>
-			<tbody>
-				<?php for($i=0;$i<sizeof($vendas);$i++) { ?>
-					<tr>
-						<td><?=$vendas[$i]['dataf']?></td>
-						<td class="valor-venda-td"><?=number_format($vendas[$i]['valor'], 2, ',', '.')?></td>
-						
-					</tr>
-				<?php } ?>
-			</tbody>
-			<tfoot>
-				<tr>
-					<th>Total</td>
-					<th colspan=2 id="total_valor_venda"><?=number_format($venda_total, 2, ',', '.')?></th>
-			</tfoot>
-		</table>
-	<?php } ?>
-
+					<td><?=$vendas[$i]['data_hora']?><br/><?=$vendas[$i]['data_dia']?></td>
+					<td><?=$vendas[$i]['cliente']?></td>
+					<td class="valor-venda-td"><?=number_format($vendas[$i]['valor'], 2, ',', '.')?></td>
+					<td>
+						<button class="btn btn-default" type="button" data-target="#produtos_modal" data-toggle="modal" data-idvenda="<?=$vendas[$i]['id']?>">
+							<span class=" glyphicon glyphicon-info-sign"></span>
+						</button>
+					</td>
+				</tr>
+			<?php } ?>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="2">Total</td>
+				<th colspan="2" id="total_valor_venda"><?=number_format($venda_total, 2, ',', '.')?></th>
+		</tfoot>
+	</table>
 </div>
 <!--<div class="divCentro centralizado">
 	<ul class="pagination" id="paginacao">

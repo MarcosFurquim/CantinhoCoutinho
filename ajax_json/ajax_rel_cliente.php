@@ -34,7 +34,7 @@ $(function() {
 		<select class="form-control"  name="cliente" id="cliente">
 			<option value="" selected="selected" disabled >Selecione o Cliente</option>
 			<?php for($i=0;$i<sizeof($clientes);$i++) { ?>
-				<option value="<?=$clientes[$i]['id']?>" data-saldo="<?=$clientes[$i]['saldo']?>"><?=$clientes[$i]['nome']?></option>
+				<option value="<?=$clientes[$i]['id']?>" data-saldo="<?=($clientes[$i]['saldo']+$clientes[$i]['bonus'])?>"><?=$clientes[$i]['nome']?></option>
 			<?php } ?>
 		</select>
 	</div>

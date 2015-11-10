@@ -3,20 +3,35 @@ require_once('./model/Cliente.php');
 $clientes = Cliente::getClientes("",0);
 $clientes_qnt = Cliente::getCount();
 
-$qnt_page = $clientes_qnt/10;
-$qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qnt_page, 0, 1);
+$qnt_page = number_format($clientes_qnt/10,2);
+$qnt_page = (substr($qnt_page, strrpos($qnt_page, ".")+1, 1) > 0)?(substr($qnt_page, 0, strrpos($qnt_page, "."))+1):substr($qnt_page, 0, strrpos($qnt_page, "."));
+
+for($i=0;$i<sizeof($clientes);$i++) {
+	if($clientes[$i]['saldo']<0) {
+		if($clientes[$i]['saldo']+$clientes[$i]['bonus']>0) {
+			$clientes[$i]['bonus']+=$clientes[$i]['saldo'];
+			$clientes[$i]['saldo'] =0;
+		} else {
+			$clientes[$i]['saldo'] +=$clientes[$i]['bonus'];
+			$clientes[$i]['bonus']=0;
+		}
+	}
+}
 ?>
 <script>
 	$(function() {
 		$('#creditar_modal').on('show.bs.modal', function (event) {
 		  var button = $(event.relatedTarget); // Button that triggered the modal
 		  var id_user = button.data('iduser'); // Extract info from data-* attributes
+		  var tipo_credito = button.data('tipocredito'); // Extract info from data-* attributes
+		  var texto_tipo=(tipo_credito=='C')?'Creditar':'Bonificar';
 		  var nome_user = button.data('nomeuser'); // Extract info from data-* attributes
 		  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 		  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 		  var modal = $(this);
-		  modal.find('#ModalLabel').text('Creditar ' + nome_user);
+		  modal.find('#ModalLabel').text(texto_tipo+' ' + nome_user);
 		  modal.find('#id_user').val(id_user);
+		  modal.find('#tipo_credito').val(tipo_credito);
 		  modal.find("#valor").val("");
 		  $('#valor').mask("#.##0,00", {reverse: true});
 		});
@@ -58,7 +73,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 			});
 		}
 		paginacao();
-		$('#paginacao a:contains(1)').parent().toggleClass("active");
+		$('#paginacao li:nth-child(1)').toggleClass("active");
 		$('#filtro_nome_cliente').keyup(function() {
 			var img = $("<img />").attr('src', './img/ajax-loader.gif').attr('style','margin: 0px 50%;');
 			$.ajax({
@@ -94,14 +109,14 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 							$("#paginacao").append("<li><a href='#'>"+i+"</a></li>");
 						}
 						//ativa a primeira pagina
-						$('#paginacao a:contains(1)').parent().toggleClass("active");
+						$('#paginacao li:nth-child(1)').toggleClass("active");
 						paginacao();
 					}
 					}).done(function(result) {
 						//alert(result);
 					});
 		});
-		
+		 $("[data-tt=tooltip]").tooltip();
 	});
 
 	function ajaxCreditarUsuario() {
@@ -109,7 +124,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 			$.ajax({
 						url: "./ajax_json/ajax_credita_usuario.php",
 						type: "GET",
-						data: 'id='+$("#id_user").val()+'&valor='+$("#valor").val(),
+						data: 'id='+$("#id_user").val()+'&valor='+$("#valor").val()+'&tipocredito='+$("#tipo_credito").val(),
 						beforeSend: function(){
 							//$("#carregando").show('fast');
 							//$("#principal_div").html("");
@@ -170,7 +185,9 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 				<th>Nome</th>
 				<th>Email</th>
 				<th>Fone</th>
-				<th colspan="3">Crédito(R$)</th>
+				<th>Saldo (R$)</th>
+				<th>Bônus (R$)</th>
+				<th colspan="5">Saldo Final (R$)</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -180,14 +197,19 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 				<td><?=$clientes[$i]['email']?></td>
 				<td><?=$clientes[$i]['tel']?></td>
 				<td><?=number_format($clientes[$i]['saldo'], 2, ',', '.')?></td>
+				<td><?=number_format($clientes[$i]['bonus'], 2, ',', '.')?></td>
+				<td><?=number_format(($clientes[$i]['saldo']+$clientes[$i]['bonus']), 2, ',', '.')?></td>
 				<td>
-					<button data-nomeuser="<?=$clientes[$i]['nome']?>" data-iduser="<?=$clientes[$i]['id']?>"  data-toggle="modal" data-target="#creditar_modal" type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+					<button data-nomeuser="<?=$clientes[$i]['nome']?>" data-iduser="<?=$clientes[$i]['id']?>"  data-toggle="modal" data-target="#creditar_modal" type="button" class="btn btn-success" data-tt='tooltip' title='Creditar Cliente' data-tipocredito="C"><span class="glyphicon glyphicon-plus"></span></button>
 				</td>
 				<td>
-					<button type="button" class="btn btn-default" onclick="location.href='?page=editaCliente&id=<?=$clientes[$i]['id']?>'"><span class="glyphicon glyphicon-pencil"></span></button>
+					<button data-nomeuser="<?=$clientes[$i]['nome']?>" data-iduser="<?=$clientes[$i]['id']?>"  data-toggle="modal" data-target="#creditar_modal" type="button" class="btn btn-primary" data-tt='tooltip' title='Bonificar Cliente' data-tipocredito="B"><span class="glyphicon glyphicon-plus"></span></button>
 				</td>
 				<td>
-					<button type="button" class="btn btn-default" onclick="ajaxExcluiCliente(<?=$clientes[$i]['id']?>)"><span class="glyphicon glyphicon-remove"></span></button>
+					<button type="button" class="btn btn-info" onclick="location.href='?page=editaCliente&id=<?=$clientes[$i]['id']?>'" data-tt='tooltip' title='Editar Cliente'><span class="glyphicon glyphicon-pencil"></span></button>
+				</td>
+				<td>
+					<button type="button" class="btn btn-danger" onclick="ajaxExcluiCliente(<?=$clientes[$i]['id']?>)" data-tt='tooltip' title='Excluir Cliente'><span class="glyphicon glyphicon-remove"></span></button>
 				</td>
 			</tr>
 			<?php } ?>  
@@ -209,6 +231,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 				<span class="input-group-addon">R$</span>
 				<input type="text" class="form-control" id="valor" placeholder="Valor">
 				<input type="hidden"  id="id_user">
+				<input type="hidden"  id="tipo_credito">
 			</div>
           </div>
 		</form>

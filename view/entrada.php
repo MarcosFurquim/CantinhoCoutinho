@@ -136,6 +136,8 @@ $fornecedores = Fornecedor::getFornecedores();
 		border: 1px solid #d3d3d3;
 		outline: none;
 		overflow: visible;
+		overflow-y: scroll;
+		max-height: 300px;
 		padding: 10px 0;
 		box-shadow: 0 2px 4px rgba(0,0,0,.2);
 	}
@@ -148,7 +150,7 @@ $fornecedores = Fornecedor::getFornecedores();
 	}
 </style>
 <div>
-<legend>Entrada</legend>
+<legend>Despesa</legend>
 <fieldset>
 <form method="post" action="./control/controlEntrada.php" onsubmit="return validaEntrada();"  role="form">
 	<div class="form-group">

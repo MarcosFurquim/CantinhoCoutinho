@@ -5,6 +5,17 @@
    padding-bottom: 40px;
    padding-top: 40px;
 }
+
+.container {
+	background-color: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    min-height: 550px;
+    padding: 20px;
+	margin: 0 auto;
+}
+
 .container-narrow {
     background-color: #fff;
     border: 1px solid #e5e5e5;
@@ -12,11 +23,10 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     min-height: 550px;
     padding: 20px;
-}
-.container-narrow {
-    margin: 0 auto;
+	margin: 0 auto;
     max-width: 850px;
 }
+
 .container-contents {
 	margin: 10px 5px 10px 5px;
 }
@@ -69,8 +79,38 @@ body.modal-open { overflow:inherit; padding-right:inherit !important; }
 
 .cli_aviso_saldo {
 	margin-top:20px;
+	overflow-y: scroll;
+	max-height: 350px;
 }
 .trasparente {
 	//background: url(../img/logoccbw.jpg) no-repeat center fixed;
 	background: rgba(255,255,255,0.95);
+}
+
+.dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
+   background-color: #2e6da4;
+  background-image: -webkit-linear-gradient(top,#337ab7 0,#2e6da4 100%);
+  background-image: -o-linear-gradient(top,#337ab7 0,#2e6da4 100%);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#337ab7),to(#2e6da4));
+  background-image: linear-gradient(to bottom,#337ab7 0,#2e6da4 100%);
+}
+.navbar-default .navbar-nav>.active>a {
+  color: #fff;
+  text-decoration: none;
+  background-image: -webkit-linear-gradient(top,#337ab7 0,#2e6da4 100%);
+  background-image: -o-linear-gradient(top,#337ab7 0,#2e6da4 100%);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#337ab7),to(#2e6da4));
+  background-image: linear-gradient(to bottom,#337ab7 0,#2e6da4 100%);
+}
+.navbar-default .navbar-nav>.active>a:hover {
+	color:#fff;
+}
+.navbar-brand {
+	padding: 7px 15px 10px 15px;
+}
+.navbar-brand img {
+	width:75px;
+}
+ul.aviso {
+	min-width:380px;
 }

@@ -9,7 +9,8 @@ $produtos = Produto::getProdutos($_GET['nome'],$index);
 		$('#paginacao a').parent().each(function() {
 			$(this).removeClass("active");
 		});
-		$('#paginacao a:contains(<?=$_GET['pag']?>)').parent().toggleClass("active");
+		$('#paginacao li:nth-child(<?=$_GET['pag']?>)').toggleClass("active");
+		$("[data-tt=tooltip]").tooltip();
 	});
 </script>
 <table class="table table-striped table-hover">
@@ -28,10 +29,10 @@ $produtos = Produto::getProdutos($_GET['nome'],$index);
 			<td><?=number_format($produtos[$i]['preco'], 2, ',', '.')?></td>
 			<td><?=$produtos[$i]['descricao']?></td>
 			<td>
-				<button type="button" class="btn btn-default" onclick="location.href='?page=editaProduto&id=<?=$produtos[$i]['id']?>'"><span class="glyphicon glyphicon-pencil"></span></button>
+				<button type="button" class="btn btn-info" onclick="location.href='?page=editaProduto&id=<?=$produtos[$i]['id']?>'" data-tt='tooltip' title='Editar Produto'><span class="glyphicon glyphicon-pencil"></span></button>
 			</td>
 			<td>
-				<button type="button" class="btn btn-default" onclick="ajaxExcluiProduto(<?=$produtos[$i]['id']?>)"><span class="glyphicon glyphicon-remove"></span></button>
+				<button type="button" class="btn btn-danger" onclick="ajaxExcluiProduto(<?=$produtos[$i]['id']?>)" data-tt='tooltip' title='Excluir Produto'><span class="glyphicon glyphicon-remove"></span></button>
 			</td>
 		</tr>
 		<?php } ?>  

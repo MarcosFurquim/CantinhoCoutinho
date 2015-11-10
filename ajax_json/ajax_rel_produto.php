@@ -1,4 +1,5 @@
 ﻿<?php
+date_default_timezone_set("Brazil/East");
 require_once ('../lib/libdba.php');
 require_once ('../model/Produto.php');
 $produtos = Produto::getProdutos();

@@ -38,7 +38,8 @@ class Cliente {
 		$args = func_get_args();
 		 if($numArgs == 2){
 			$query = "select id, nome,email,tel,
-						coalesce(credito, 0) credito, 
+						coalesce(credito, 0) credito,
+						coalesce(bonus, 0) bonus, 
 						coalesce(debito, 0) debito,
 						(coalesce(credito, 0))-(coalesce(debito, 0)) saldo
 
@@ -54,13 +55,19 @@ class Cliente {
 						right join cliente c on(c.id=cc.id_cliente)
 						and tipo='D' group by id_) as debito
 						on(credito.id=debito.id_)
-
+						left join
+						(select c.id as id_b, sum(valor) as bonus
+						from cliente_credito cc
+						right join cliente c on(c.id=cc.id_cliente)
+						and tipo='B' group by id_b) as bonus
+     	                on(credito.id=bonus.id_b)  
 						)  
 						where nome like '%$args[0]%' order by nome limit $args[1],10
 					";
 		 } else if($numArgs == 1){
 			$query = "select id, nome,email,tel,
-						coalesce(credito, 0) credito, 
+						coalesce(credito, 0) credito,
+						coalesce(bonus, 0) bonus, 
 						coalesce(debito, 0) debito,
 						(coalesce(credito, 0))-(coalesce(debito, 0)) saldo
 
@@ -76,13 +83,19 @@ class Cliente {
 						right join cliente c on(c.id=cc.id_cliente)
 						and tipo='D' group by id_) as debito
 						on(credito.id=debito.id_)
-
-						)  
+						left join
+						(select c.id as id_b, sum(valor) as bonus
+						from cliente_credito cc
+						right join cliente c on(c.id=cc.id_cliente)
+						and tipo='B' group by id_b) as bonus
+     	                on(credito.id=bonus.id_b)  
+						) 
 						where nome like '%$args[0]%' order by nome
 					";
 		 } else {
 					$query = "select id, nome,email,tel,
-						coalesce(credito, 0) credito, 
+						coalesce(credito, 0) credito,
+						coalesce(bonus, 0) bonus, 
 						coalesce(debito, 0) debito,
 						(coalesce(credito, 0))-(coalesce(debito, 0)) saldo
 
@@ -98,9 +111,14 @@ class Cliente {
 						right join cliente c on(c.id=cc.id_cliente)
 						and tipo='D' group by id_) as debito
 						on(credito.id=debito.id_)
-
-						)  
-						order by nome
+						left join
+						(select c.id as id_b, sum(valor) as bonus
+						from cliente_credito cc
+						right join cliente c on(c.id=cc.id_cliente)
+						and tipo='B' group by id_b) as bonus
+     	                on(credito.id=bonus.id_b)  
+						)
+                        order by nome
 					";
 		 }
 		$clientes = $conexaoCantina->query($query)->fetchAll();

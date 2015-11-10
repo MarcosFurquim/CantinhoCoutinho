@@ -58,11 +58,13 @@ $clientes = Cliente::getClientes();
 			$("#nome_cliente").hide();
 			$("[name='hdn_cli_saldo']").val($(cliente).find("option:selected").data('saldo'));
 			$("[name='pago']").prop('disabled',false);
+			$("[name='pago'][value='N']").prop('checked',true);
 		} else if(rd.value=="N") {
 			$("#cliente").hide();
 			$("#nome_cliente").show();
 			$("[name='hdn_cli_saldo']").val(-1);
 			$("#detalheCliente").hide();
+			$("[name='pago'][value='S']").prop('checked',true);
 			$("[name='pago']").prop('disabled',true);
 				
 		}
@@ -237,6 +239,8 @@ $clientes = Cliente::getClientes();
 			border: 1px solid #d3d3d3;
 			outline: none;
 			overflow: visible;
+			overflow-y: scroll;
+			max-height: 300px;
 			padding: 10px 0;
 			box-shadow: 0 2px 4px rgba(0,0,0,.2);
 		}
@@ -266,7 +270,7 @@ $clientes = Cliente::getClientes();
 			<select class="form-control"  name="cliente" id="cliente" onchange="mostraInfoCliente(this)">
 				<option value="-1" selected="selected" disabled >Selecione o Cliente</option>
 				<?php for($i=0;$i<sizeof($clientes);$i++) { ?>
-					<option value="<?=$clientes[$i]['id']?>" data-saldo="<?=$clientes[$i]['saldo']?>"><?=$clientes[$i]['nome']?></option>
+					<option value="<?=$clientes[$i]['id']?>" data-saldo="<?=$clientes[$i]['saldo']+$clientes[$i]['bonus']?>"><?=$clientes[$i]['nome']?></option>
 				<?php } ?>
 			</select>
 			<input type="text" class="form-control" id="nome_cliente" name="nome_cliente" placeholder="Nome do Cliente" />
@@ -343,7 +347,7 @@ $clientes = Cliente::getClientes();
 	<hr/>
 	<div class="form-group"  style="display:block; margin-top: 30px;">
 		<label class="control-label field">&nbsp;</label>
-		<button type="submit" class="btn btn-success">Vender</button>
+		<button type="submit" class="btn btn-lg btn-success">Vender</button>
 		<input type="hidden"  name="hdn_cli_saldo" value="" />
 		<input type="hidden"  name="hdn_total_valor_venda" value="" />
 	</div>

@@ -3,12 +3,13 @@ require_once './model/Produto.php';
 $produtos = Produto::getProdutos("",0);
 $produtos_qnt = Produto::getCount();
 
-$qnt_page = $produtos_qnt/10;
-$qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qnt_page, 0, 1);
+$qnt_page = number_format($produtos_qnt/10,2);
+$qnt_page = (substr($qnt_page, strrpos($qnt_page, ".")+1, 1) > 0)?(substr($qnt_page, 0, strrpos($qnt_page, "."))+1):substr($qnt_page, 0, strrpos($qnt_page, "."));
+
 ?>
 <script>
 	$(function() {
-		$('#paginacao a:contains(1)').parent().toggleClass("active");
+		$('#paginacao li:nth-child(1)').toggleClass("active");
 		$('#filtro_nome_produto').keyup(function() {
 			var img = $("<img />").attr('src', './img/ajax-loader.gif').attr('style','margin: 0px 50%;');
 			$.ajax({
@@ -44,7 +45,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 							$("#paginacao").append("<li><a href='#'>"+i+"</a></li>");
 						}
 						//ativa a primeira pagina
-						$('#paginacao a:contains(1)').parent().toggleClass("active");
+						$('#paginacao li:nth-child(1)').toggleClass("active");
 						paginacao();
 					}
 					}).done(function(result) {
@@ -75,6 +76,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 			});
 		}
 		paginacao();
+		$("[data-tt=tooltip]").tooltip();
 	});
 	
 	function ajaxExcluiProduto(idProduto) {
@@ -125,10 +127,10 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 				<td><?=number_format($produtos[$i]['preco'], 2, ',', '.')?></td>
 				<td><?=$produtos[$i]['descricao']?></td>
 				<td>
-					<button type="button" class="btn btn-default" onclick="location.href='?page=editaProduto&id=<?=$produtos[$i]['id']?>'"><span class="glyphicon glyphicon-pencil"></span></button>
+					<button type="button" class="btn btn-info" onclick="location.href='?page=editaProduto&id=<?=$produtos[$i]['id']?>'" data-tt='tooltip' title='Editar Produto'><span class="glyphicon glyphicon-pencil"></span></button>
 				</td>
 				<td>
-					<button type="button" class="btn btn-default" onclick="ajaxExcluiProduto(<?=$produtos[$i]['id']?>)"><span class="glyphicon glyphicon-remove"></span></button>
+					<button type="button" class="btn btn-danger" onclick="ajaxExcluiProduto(<?=$produtos[$i]['id']?>)" data-tt='tooltip' title='Excluir Produto'><span class="glyphicon glyphicon-remove"></span></button>
 				</td>
 			</tr>
 			<?php } ?>  

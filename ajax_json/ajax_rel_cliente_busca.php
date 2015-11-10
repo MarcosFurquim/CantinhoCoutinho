@@ -7,9 +7,24 @@ for($i=0;$i<sizeof($cliente_hist);$i++) {
 	$cliente_hist[$i]['data'] = ConverteDataBD($cliente_hist[$i]['data']);
 	$cliente_hist[$i]['data_hora'] = explode(" ", $cliente_hist[$i]['data'])[0];
 	$cliente_hist[$i]['data_dia'] = explode(" ", $cliente_hist[$i]['data'])[1];
+	$cliente_hist[$i]['classeCss'] = "";
+	switch($cliente_hist[$i]['tipo']) {
+		case 'C':
+			$cliente_hist[$i]['classeCss'] = 'success';
+			$cliente_hist[$i]['tipoExt'] = 'Crédito';
+		break;
+		case 'D':
+			$cliente_hist[$i]['classeCss'] = 'danger';
+			$cliente_hist[$i]['tipoExt'] = 'Débito';
+		break;
+		case 'B':
+			$cliente_hist[$i]['classeCss'] = 'info';
+			$cliente_hist[$i]['tipoExt'] = 'Bônus';
+		break;
+	}
 }
-$qnt_page = $cliente_hist_qnt/10;
-$qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qnt_page, 0, 1);
+$qnt_page = number_format($cliente_hist_qnt/10,2);
+$qnt_page = (substr($qnt_page, strrpos($qnt_page, ".")+1, 1) > 0)?(substr($qnt_page, 0, strrpos($qnt_page, "."))+1):substr($qnt_page, 0, strrpos($qnt_page, "."));
 ?>
 <script>
 	$(function() {
@@ -35,7 +50,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 						//alert(result);
 					});
 		});
-		$('#paginacao a:contains(1)').parent().toggleClass("active");
+		$('#paginacao li:nth-child(1)').toggleClass("active");
 	});
 </script>
 <div id="saldo_cli" >Saldo do cliente:R$ <b></b></div>
@@ -48,10 +63,10 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 		</thead>
 		<tbody>
 			<?php for($i=0;$i<sizeof($cliente_hist);$i++) { ?>
-				<tr class="<?php echo ($cliente_hist[$i]['tipo']=='C')? 'success':'danger';?>">
+				<tr class="<?=$cliente_hist[$i]['classeCss']?>">
 					<td><?=$cliente_hist[$i]['data_hora']?><br/><?=$cliente_hist[$i]['data_dia']?></td>
 					<td><?=number_format($cliente_hist[$i]['valor'], 2, ',', '.')?></td>
-					<td><?php echo ($cliente_hist[$i]['tipo']=='C')? 'Crédito':'Débito';?></td>
+					<td><?=$cliente_hist[$i]['tipoExt']?></td>
 				</tr>
 			<?php } ?>
 		</tbody>

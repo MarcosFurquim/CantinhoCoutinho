@@ -7,6 +7,21 @@ for($i=0;$i<sizeof($cliente_hist);$i++) {
 	$cliente_hist[$i]['data'] = ConverteDataBD($cliente_hist[$i]['data']);
 	$cliente_hist[$i]['data_hora'] = explode(" ", $cliente_hist[$i]['data'])[0];
 	$cliente_hist[$i]['data_dia'] = explode(" ", $cliente_hist[$i]['data'])[1];
+	$cliente_hist[$i]['classeCss'] = "";
+	switch($cliente_hist[$i]['tipo']) {
+		case 'C':
+			$cliente_hist[$i]['classeCss'] = 'success';
+			$cliente_hist[$i]['tipoExt'] = 'Crédito';
+		break;
+		case 'D':
+			$cliente_hist[$i]['classeCss'] = 'danger';
+			$cliente_hist[$i]['tipoExt'] = 'Débito';
+		break;
+		case 'B':
+			$cliente_hist[$i]['classeCss'] = 'info';
+			$cliente_hist[$i]['tipoExt'] = 'Bônus';
+		break;
+	}
 }
 ?>
 <script>
@@ -14,7 +29,7 @@ for($i=0;$i<sizeof($cliente_hist);$i++) {
 		$('#paginacao a').parent().each(function() {
 			$(this).removeClass("active");
 		});
-		$('#paginacao a:contains(<?=$_GET['pag']?>)').parent().toggleClass("active");
+		$('#paginacao li:nth-child(<?=$_GET['pag']?>)').toggleClass("active");
 	});
 </script>
 <table class="table table-hover table-striped" >
@@ -25,10 +40,10 @@ for($i=0;$i<sizeof($cliente_hist);$i++) {
 	</thead>
 	<tbody>
 		<?php for($i=0;$i<sizeof($cliente_hist);$i++) { ?>
-			<tr class="<?php echo ($cliente_hist[$i]['tipo']=='C')? 'success':'danger';?>">
+			<tr class="<?=$cliente_hist[$i]['classeCss']?>">
 				<td><?=$cliente_hist[$i]['data_hora']?><br/><?=$cliente_hist[$i]['data_dia']?></td>
 				<td><?=number_format($cliente_hist[$i]['valor'], 2, ',', '.')?></td>
-				<td><?php echo ($cliente_hist[$i]['tipo']=='C')? 'Crédito':'Débito';?></td>
+				<td><?=$cliente_hist[$i]['tipoExt']?></td>
 			</tr>
 		<?php } ?>
 	</tbody>

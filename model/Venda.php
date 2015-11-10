@@ -13,21 +13,25 @@ class Venda {
 	public function cadastraVenda() {
 		require_once ('../lib/libdba.php');
 		$conexaoCantina = conectaCantina();
+		$pago = (@$_POST['pago']=='N')? 'N' :'S';
 		//simular sobrecarga de metodo
 		//arg[0]= last record credito_cliente
+		//arg[1]= last credito id pago
 		$numArgs = (int)func_num_args();
 		$args = func_get_args();
 		if($_POST['data']=='S') {
 			$last_venda_id = $conexaoCantina->insert("venda", [
 			"cliente_id" => $this->cliente_id,
 			"cliente_nome" => $this->cliente_nome,
-			"#data" => 'NOW()'
+			"#data" => 'NOW()',
+			"pago" => $pago
 			]);
 		} else if($_POST['data']=='N') {
 			$last_venda_id = $conexaoCantina->insert("venda", [
 			"cliente_id" => $this->cliente_id,
 			"cliente_nome" => $this->cliente_nome,
-			"data" => inverteDataBD($_POST['campoData'])
+			"data" => inverteDataBD($_POST['campoData']),
+			"pago" => $pago
 			]);
 		}
 		$precototal = 0;
@@ -58,7 +62,7 @@ class Venda {
 			],["id" =>$args[1]]);
 		}
 		
-			//var_dump( $conexaoCantina->log() );
+		//var_dump( $conexaoCantina->log() );
 		return $last_venda_id;
 	}
 	
@@ -73,6 +77,7 @@ class Venda {
 		$conexaoCantina = conectaCantina();
 		if($numArgs == 2){
 			$query = "select v.*, c.nome,
+					 case pago when 'S' then 'Sim' when 'N' then 'Não' end pago,
 					if(v.cliente_id<>0,c.nome, cliente_nome) as cliente
 					from venda v
 					left join cliente c on(v.cliente_id=c.id)
@@ -80,6 +85,7 @@ class Venda {
 					order by v.data desc";
 		} else if($numArgs == 3){
 			$query = "select v.*, c.nome,
+					 case pago when 'S' then 'Sim' when 'N' then 'Não' end pago,
 					if(v.cliente_id<>0,c.nome, cliente_nome) as cliente
 					from venda v
 					left join cliente c on(v.cliente_id=c.id)
@@ -89,6 +95,7 @@ class Venda {
 					order by v.data desc";
 		} else if($numArgs == 4){
 			$query = "select v.*, c.nome,
+					 case pago when 'S' then 'Sim' when 'N' then 'Não' end pago,
 					if(v.cliente_id<>0,c.nome, cliente_nome) as cliente
 					from venda v
 					left join cliente c on(v.cliente_id=c.id)
@@ -99,6 +106,7 @@ class Venda {
 					LIMIT $args[3],10";
 		} else {
 			$query = "select v.*, c.nome,
+					 case pago when 'S' then 'Sim' when 'N' then 'Não' end pago,
 					if(v.cliente_id<>0,c.nome, cliente_nome) as cliente
 					from venda v
 					left join cliente c on(v.cliente_id=c.id)

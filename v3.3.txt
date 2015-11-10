@@ -1,0 +1,3 @@
+ALTER TABLE `cantina`.`venda`
+  ADD COLUMN `pago` char(1) NOT NULL DEFAULT 'N';
+SHOW CREATE TABLE `cantina`.`venda`;

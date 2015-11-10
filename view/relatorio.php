@@ -59,6 +59,7 @@
   <li role="presentation"><a href="#rel_entrada" data-url="./ajax_json/ajax_rel_entrada.php">Despesa</a></li>
   <li role="presentation"><a href="#rel_cliente" data-url="./ajax_json/ajax_rel_cliente.php">Cliente</a></li>
   <li role="presentation"><a href="#rel_produto" data-url="./ajax_json/ajax_rel_produto.php">Produto</a></li>
+  <li role="presentation"><a href="#rel_caixa" data-url="./ajax_json/ajax_rel_caixa.php">Caixa</a></li>
 </ul>
 <div class="tab-content">
 	<div id="rel_venda" class="tab-pane active">
@@ -68,6 +69,8 @@
 	<div id="rel_cliente" class="tab-pane">
 	</div>
 	<div id="rel_produto" class="tab-pane">
+	</div>
+	<div id="rel_caixa" class="tab-pane">
 	</div>
 </div>
 
