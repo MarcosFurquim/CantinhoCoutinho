@@ -1,5 +1,5 @@
 ﻿<?php
-require_once ('../model/fornecedor.php');
+require_once ('../model/Fornecedor.php');
 $fornecedor = new Fornecedor($_POST['nome_pro'],$_POST['desc_prod']);
 if(isset($_POST['btn_cadastrar'])) {
 	if($fornecedor->cadastraFornecedor()) {
