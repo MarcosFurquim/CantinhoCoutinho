@@ -1,5 +1,5 @@
 ﻿<?php
-require_once ('./model/produto.php');
+require_once ('./model/Produto.php');
 $produto = Produto::getProduto($_GET['id']);
 ?>
 <script>

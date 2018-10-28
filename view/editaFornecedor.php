@@ -1,5 +1,5 @@
 ﻿<?php
-require_once ('./model/fornecedor.php');
+require_once ('./model/Fornecedor.php');
 $fornecedor = Fornecedor::getFornecedor($_GET['id']);
 ?>
 <form class="form-horizontal" name="frm_cadastra_usuario" role="form" method="post" action="./control/controlFornecedor.php">

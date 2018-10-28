@@ -1,5 +1,5 @@
 ﻿<?php
-require_once ('../model/produto.php');
+require_once ('../model/Produto.php');
 $preco = str_replace(",",".",str_replace(".","",$_POST['preco_pro']));
 $produto = new Produto($_POST['nome_pro'],$preco,$_POST['desc_prod']);
 if(isset($_POST['btn_cadastrar'])) {

@@ -1,6 +1,6 @@
 ﻿<?php
 require_once ('../lib/libdba.php');
-require_once ('../model/venda.php');
+require_once ('../model/Venda.php');
 
 $venda = Venda::getProdutosVenda($_GET['id']);
 
