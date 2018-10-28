@@ -104,7 +104,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 		}
 	}
 </script>
-<div class="divbotao_novo"><button class="btn btn-default btn-sm" onclick="location.href='?page=CadastroFornecedor'">Novo</button></div>
+<div class="divbotao_novo"><button class="btn btn-default btn-sm" onclick="location.href='?page=cadastroFornecedor'">Novo</button></div>
 <div class="divqnt"><span><b><?=$fornecedores_qnt?></b></span> fornecedor(es)</div>
 <div class="form-group " style="margin-top:30px;">
 	<input type="text" class="form-control" placeholder="Filtrar por nome" id="filtro_nome_fornecedor" />

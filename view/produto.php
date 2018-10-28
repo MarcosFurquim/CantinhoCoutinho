@@ -105,7 +105,7 @@ $qnt_page = (substr($qnt_page, strrpos($qnt_page, ".")+1, 1) > 0)?(substr($qnt_p
 		}
 	}
 </script>
-<div class="divbotao_novo"><button class="btn btn-default btn-sm" onclick="location.href='?page=CadastroProduto'">Novo</button></div>
+<div class="divbotao_novo"><button class="btn btn-default btn-sm" onclick="location.href='?page=cadastroProduto'">Novo</button></div>
 <div class="divqnt"><span><b><?=$produtos_qnt?></b></span> produto(s)</div>
 <div class="form-group " style="margin-top:30px;">
 	<input type="text" class="form-control" placeholder="Filtrar por nome" id="filtro_nome_produto" />

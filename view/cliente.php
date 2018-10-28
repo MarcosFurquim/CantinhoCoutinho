@@ -173,7 +173,7 @@ for($i=0;$i<sizeof($clientes);$i++) {
 		}
 	}
 </script>
-<div class="divbotao_novo"><button class="btn btn-default btn-sm" onclick="location.href='?page=CadastroCliente'">Novo</button></div>
+<div class="divbotao_novo"><button class="btn btn-default btn-sm" onclick="location.href='?page=cadastroCliente'">Novo</button></div>
 <div class="divqnt"><span><b><?=$clientes_qnt?></b></span> cliente(s)</div>
 <div class="form-group " style="margin-top:30px;">
 	<input type="text" class="form-control" placeholder="Filtrar por nome" id="filtro_nome_cliente" />
