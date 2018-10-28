@@ -37,6 +37,7 @@ for($i=0;$i<sizeof($cliente_hist);$i++) {
 		<th>Data</th>
 		<th>Valor(R$)</th>
 		<th>Tipo</th>
+		<th class="th-btn-group"></th>
 	</thead>
 	<tbody>
 		<?php for($i=0;$i<sizeof($cliente_hist);$i++) { ?>
@@ -44,6 +45,11 @@ for($i=0;$i<sizeof($cliente_hist);$i++) {
 				<td><?=$cliente_hist[$i]['data_hora']?><br/><?=$cliente_hist[$i]['data_dia']?></td>
 				<td><?=number_format($cliente_hist[$i]['valor'], 2, ',', '.')?></td>
 				<td><?=$cliente_hist[$i]['tipoExt']?></td>
+				<td>
+					<?php if ($cliente_hist[$i]['id_venda'] == 0) { ?> 
+						<button title="" data-tt="tooltip" onclick="ajaxExcluiCreditoHist(<?=$cliente_hist[$i]['id'] ?>)" class="btn btn-danger" type="button" data-original-title="Exckuir"><span class="glyphicon glyphicon-remove"></span></button>
+					<?php } ?>
+				</td>
 			</tr>
 		<?php } ?>
 	</tbody>

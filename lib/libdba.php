@@ -1,13 +1,13 @@
 ﻿<?php
-require_once ('medoo.min.php');
+require_once ('medoo.php');
 
 function conectaCantina() {
 	$conexaoCantina = new medoo([
 	'database_type' => 'mysql',
-	'database_name' => 'cantina',
+	'database_name' => 'energym_cantinho',
 	'server' => 'localhost',
-	'username' => 'root',
-	'password' => '',
+	'username' => 'energym_cantinho',
+	'password' => 'mff72985141',
 	'charset' => 'utf8'
 	]);
 	return $conexaoCantina;

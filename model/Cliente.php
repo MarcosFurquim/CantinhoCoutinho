@@ -48,18 +48,18 @@ class Cliente {
 						(select c.id,c.nome,c.email,c.tel, sum(valor) as credito
 						from cliente_credito cc
 						right join cliente c on(c.id=cc.id_cliente)
-						and tipo='C' group by id) as credito
+						and tipo='C' and cc.ativo=1 group by id) as credito
 						left join
 						(select c.id as id_, sum(valor) as debito
 						from cliente_credito cc
 						right join cliente c on(c.id=cc.id_cliente)
-						and tipo='D' group by id_) as debito
+						and tipo='D' and cc.ativo=1 group by id_) as debito
 						on(credito.id=debito.id_)
 						left join
 						(select c.id as id_b, sum(valor) as bonus
 						from cliente_credito cc
 						right join cliente c on(c.id=cc.id_cliente)
-						and tipo='B' group by id_b) as bonus
+						and tipo='B' and cc.ativo=1 group by id_b) as bonus
      	                on(credito.id=bonus.id_b)  
 						)  
 						where nome like '%$args[0]%' order by nome limit $args[1],10
@@ -76,18 +76,18 @@ class Cliente {
 						(select c.id,c.nome,c.email,c.tel, sum(valor) as credito
 						from cliente_credito cc
 						right join cliente c on(c.id=cc.id_cliente)
-						and tipo='C' group by id) as credito
+						and tipo='C' and cc.ativo=1 group by id) as credito
 						left join
 						(select c.id as id_, sum(valor) as debito
 						from cliente_credito cc
 						right join cliente c on(c.id=cc.id_cliente)
-						and tipo='D' group by id_) as debito
+						and tipo='D' and cc.ativo=1 group by id_) as debito
 						on(credito.id=debito.id_)
 						left join
 						(select c.id as id_b, sum(valor) as bonus
 						from cliente_credito cc
 						right join cliente c on(c.id=cc.id_cliente)
-						and tipo='B' group by id_b) as bonus
+						and tipo='B' and cc.ativo=1 group by id_b) as bonus
      	                on(credito.id=bonus.id_b)  
 						) 
 						where nome like '%$args[0]%' order by nome
@@ -104,18 +104,18 @@ class Cliente {
 						(select c.id,c.nome,c.email,c.tel, sum(valor) as credito
 						from cliente_credito cc
 						right join cliente c on(c.id=cc.id_cliente)
-						and tipo='C' group by id) as credito
+						and tipo='C' and cc.ativo=1 group by id) as credito
 						left join
 						(select c.id as id_, sum(valor) as debito
 						from cliente_credito cc
 						right join cliente c on(c.id=cc.id_cliente)
-						and tipo='D' group by id_) as debito
+						and tipo='D' and cc.ativo=1 group by id_) as debito
 						on(credito.id=debito.id_)
 						left join
 						(select c.id as id_b, sum(valor) as bonus
 						from cliente_credito cc
 						right join cliente c on(c.id=cc.id_cliente)
-						and tipo='B' group by id_b) as bonus
+						and tipo='B' and cc.ativo=1 group by id_b) as bonus
      	                on(credito.id=bonus.id_b)  
 						)
                         order by nome
@@ -174,9 +174,9 @@ class Cliente {
         $args = func_get_args();
 		$conexaoCantina = conectaCantina();
 		if($numArgs == 2){
-			$cliente_hist = $conexaoCantina->select("cliente_credito", "*",["id_cliente" => $idCliente,"ORDER" => "data DESC", "LIMIT" => [$args[1], 10]]);
+			$cliente_hist = $conexaoCantina->select("cliente_credito", "*",["AND" => ["id_cliente" => $idCliente,"ativo" => true],"ORDER" => "data DESC", "LIMIT" => [$args[1], 10]]);
 		}else if($numArgs == 1) {
-			$cliente_hist = $conexaoCantina->select("cliente_credito", "*",["id_cliente" => $idCliente,"ORDER" => "data DESC"]);
+			$cliente_hist = $conexaoCantina->select("cliente_credito", "*",["AND" => ["id_cliente" => $idCliente,"ativo" => true],"ORDER" => "data DESC"]);
 		}
 		return $cliente_hist;
 	}
@@ -188,9 +188,9 @@ class Cliente {
         $args = func_get_args();
 		$conexaoCantina = conectaCantina();
 		if($numArgs == 1){
-			$count = $conexaoCantina->count("cliente_credito",["id_cliente" =>$args[0]]);
+			$count = $conexaoCantina->count("cliente_credito",["AND" => ["id_cliente" =>$args[0],"ativo" => true]]);
 		}else if($numArgs == 0) {
-			$count = $conexaoCantina->count("cliente_credito");
+			$count = $conexaoCantina->count("cliente_credito",["ativo" => true]);
 		}
 		return $count;
 	}
@@ -199,6 +199,15 @@ class Cliente {
 		$conexaoCantina = conectaCantina();
 		$count = $conexaoCantina->count("cliente");
 		return $count;
+	}
+	
+	public static function excluiHist($idHist) {
+		require_once ('../lib/libdba.php');
+		$conexaoCantina = conectaCantina();
+		$rows_affected = $conexaoCantina->update("cliente_credito", [
+		"ativo" => false
+		],["id" =>$idHist]);
+		return $rows_affected;
 	}
 }
 ?>

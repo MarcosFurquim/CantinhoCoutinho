@@ -1,0 +1,2 @@
+ALTER TABLE `cantina`.`cliente_credito`
+  ADD COLUMN `id_venda` int(11) NOT NULL DEFAULT '0';

@@ -114,3 +114,9 @@ body.modal-open { overflow:inherit; padding-right:inherit !important; }
 ul.aviso {
 	min-width:380px;
 }
+td.btn-group-4 {
+    min-width: 173px;
+}
+th.th-btn-group {
+	width:5%;
+}

@@ -1,6 +1,6 @@
 ﻿<?php
 require_once ('./lib/libdba.php');
-define("VERSAO","3.6");
+define("VERSAO","4.0");
 ?>
 <html>
 	<head>

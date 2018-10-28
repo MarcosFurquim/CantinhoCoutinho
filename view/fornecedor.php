@@ -75,7 +75,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 			});
 		}
 		paginacao();
-		$("[data-tt=tooltip]").tooltip();
+		$("[data-tt=tooltip]").tooltip({container: 'body'});
 	});
 	
 	function ajaxExcluiFornecedor(idFornecedor) {
@@ -115,7 +115,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 			<tr>
 				<th>Nome</th>
 				<th>Descrição</th>
-				<th colspan="2">&nbsp;</th>
+				<th>&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -123,10 +123,8 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 			<tr>
 				<td><?=$fornecedores[$i]['nome']?></td>
 				<td><?=$fornecedores[$i]['descricao']?></td>
-				<td>
+				<td class="btn-group">
 					<button type="button" class="btn btn-info" onclick="location.href='?page=editaFornecedor&id=<?=$fornecedores[$i]['id']?>'" data-tt='tooltip' title='Editar Fornecedor'><span class="glyphicon glyphicon-pencil"></span></button>
-				</td>
-				<td>
 					<button type="button" class="btn btn-danger" onclick="ajaxExcluiFornecedor(<?=$fornecedores[$i]['id']?>)" data-tt='tooltip' title='Exckuir Fornecedor'><span class="glyphicon glyphicon-remove"></span></button>
 				</td>
 			</tr>

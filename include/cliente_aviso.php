@@ -5,7 +5,7 @@ $saldo_negativo = false;
 $clientes_saldo_negatvo = "";
 $clientes = Cliente::getClientes();
 for($i=0;$i<sizeof($clientes);$i++) {
-	if($clientes[$i]['saldo'] < 0) {
+	if($clientes[$i]['saldo']+$clientes[$i]['bonus'] < 0) {
 		$saldo_negativo = true;
 	}
 }
@@ -19,7 +19,7 @@ for($i=0;$i<sizeof($clientes);$i++) {
 			Os seguintes clientes estão com saldo negativo(devendo):
 			<div class="cli_aviso_saldo alert alert-danger alert-dismissible" role="alert">
 				<?php for($i=0;$i<sizeof($clientes);$i++) {
-					if($clientes[$i]['saldo'] < 0) {
+					if($clientes[$i]['saldo']+$clientes[$i]['bonus'] < 0) {
 						$clientes_saldo_negatvo .=  $clientes[$i]['nome']."<br/> ";
 					}
 				}

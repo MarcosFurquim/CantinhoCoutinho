@@ -10,7 +10,7 @@ $produtos = Produto::getProdutos($_GET['nome'],$index);
 			$(this).removeClass("active");
 		});
 		$('#paginacao li:nth-child(<?=$_GET['pag']?>)').toggleClass("active");
-		$("[data-tt=tooltip]").tooltip();
+		$("[data-tt=tooltip]").tooltip({container: 'body'});
 	});
 </script>
 <table class="table table-striped table-hover">
@@ -28,10 +28,8 @@ $produtos = Produto::getProdutos($_GET['nome'],$index);
 			<td><?=$produtos[$i]['nome']?></td>
 			<td><?=number_format($produtos[$i]['preco'], 2, ',', '.')?></td>
 			<td><?=$produtos[$i]['descricao']?></td>
-			<td>
+			<td class="btn-group btn-group-4">
 				<button type="button" class="btn btn-info" onclick="location.href='?page=editaProduto&id=<?=$produtos[$i]['id']?>'" data-tt='tooltip' title='Editar Produto'><span class="glyphicon glyphicon-pencil"></span></button>
-			</td>
-			<td>
 				<button type="button" class="btn btn-danger" onclick="ajaxExcluiProduto(<?=$produtos[$i]['id']?>)" data-tt='tooltip' title='Excluir Produto'><span class="glyphicon glyphicon-remove"></span></button>
 			</td>
 		</tr>

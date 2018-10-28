@@ -10,7 +10,7 @@ $fornecedors = Fornecedor::getFornecedores($_GET['nome'],$index);
 			$(this).removeClass("active");
 		});
 		$('#paginacao a:contains(<?=$_GET['pag']?>)').parent().toggleClass("active");
-		$("[data-tt=tooltip]").tooltip();
+		$("[data-tt=tooltip]").tooltip({container: 'body'});
 	});
 </script>
 <table class="table table-striped table-hover">
@@ -18,7 +18,7 @@ $fornecedors = Fornecedor::getFornecedores($_GET['nome'],$index);
         <tr>
             <th>Nome</th>
             <th>Descrição</th>
-            <th colspan="2">&nbsp;</th>
+            <th>&nbsp;</th>
         </tr>
     </thead>
 	<tbody>
@@ -26,10 +26,8 @@ $fornecedors = Fornecedor::getFornecedores($_GET['nome'],$index);
 		<tr>
 			<td><?=$fornecedors[$i]['nome']?></td>
 			<td><?=$fornecedors[$i]['descricao']?></td>
-			<td>
+			<td class="btn-group btn-group-4">
 				<button type="button" class="btn btn-info" onclick="location.href='?page=editaFornecedor&id=<?=$fornecedors[$i]['id']?>'" data-tt='tooltip' title='Editar Fornecedor'><span class="glyphicon glyphicon-pencil"></span></button>
-			</td>
-			<td>
 				<button type="button" class="btn btn-danger" onclick="ajaxExcluiFornecedor(<?=$fornecedors[$i]['id']?>)" data-tt='tooltip' title='Excluir Fornecedor'><span class="glyphicon glyphicon-remove"></span></button>
 			</td>
 		</tr>

@@ -99,7 +99,8 @@ class Caixa {
 							   from cliente_credito cc
                   where date(data) >= '$args[0]' and date(data) <=  '$args[1]'
 							   and cc.tipo='C'
-                 and cc.id_venda=0                       
+                 and cc.id_venda=0
+				 and cc.ativo=1
 							   /*group by data*/)) t
 					/*	group by data*/
 						order by data_completo desc";
@@ -116,6 +117,7 @@ class Caixa {
 						(select cc.valor, date(cc.data) as data, cc.data as data_completo
 							   from cliente_credito cc
 							   where cc.tipo='C'
+							   and cc.ativo=1
 							   /*group by data*/)) t
 					/*	group by data*/
 						order by data_completo desc";
@@ -146,6 +148,7 @@ class Caixa {
 							   from cliente_credito cc
 							   where date(data) >= '$args[0]' and date(data) <=  '$args[1]'
 							   and cc.tipo='C'
+							   and cc.ativo=1
 							   group by data)) t
 						group by data
 						order by data desc";
@@ -162,6 +165,7 @@ class Caixa {
 						(select sum(cc.valor) as valor, date(cc.data) as data, cc.data as data_completo
 							   from cliente_credito cc
 							   where cc.tipo='C'
+							   and cc.ativo=1
 							   group by data)) t
 						group by data
 						order by data desc";

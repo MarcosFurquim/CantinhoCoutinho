@@ -76,7 +76,7 @@ $qnt_page = (substr($qnt_page, strrpos($qnt_page, ".")+1, 1) > 0)?(substr($qnt_p
 			});
 		}
 		paginacao();
-		$("[data-tt=tooltip]").tooltip();
+		$("[data-tt=tooltip]").tooltip({container: 'body'});
 	});
 	
 	function ajaxExcluiProduto(idProduto) {
@@ -117,7 +117,7 @@ $qnt_page = (substr($qnt_page, strrpos($qnt_page, ".")+1, 1) > 0)?(substr($qnt_p
 				<th>Nome</th>
 				<th>Preço(R$)</th>
 				<th>Descrição</th>
-				<th colspan="2">&nbsp;</th>
+				<th>&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -126,10 +126,8 @@ $qnt_page = (substr($qnt_page, strrpos($qnt_page, ".")+1, 1) > 0)?(substr($qnt_p
 				<td><?=$produtos[$i]['nome']?></td>
 				<td><?=number_format($produtos[$i]['preco'], 2, ',', '.')?></td>
 				<td><?=$produtos[$i]['descricao']?></td>
-				<td>
+				<td class="btn-group">
 					<button type="button" class="btn btn-info" onclick="location.href='?page=editaProduto&id=<?=$produtos[$i]['id']?>'" data-tt='tooltip' title='Editar Produto'><span class="glyphicon glyphicon-pencil"></span></button>
-				</td>
-				<td>
 					<button type="button" class="btn btn-danger" onclick="ajaxExcluiProduto(<?=$produtos[$i]['id']?>)" data-tt='tooltip' title='Excluir Produto'><span class="glyphicon glyphicon-remove"></span></button>
 				</td>
 			</tr>
