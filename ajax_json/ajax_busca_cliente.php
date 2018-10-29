@@ -1,6 +1,6 @@
 <?php
-require_once ('../lib/libdba.php');
-require_once '../model/Cliente.php';
+require_once (dirname(__DIR__).'/cantinho/lib/libdba.php');
+require_once (dirname(__DIR__).'/cantinho//model/Cliente.php');
 $index = ($_GET['pag']-1)*10;
 $clientes = Cliente::getClientes($_GET['nome'],$index);
 for($i=0;$i<sizeof($clientes);$i++) {

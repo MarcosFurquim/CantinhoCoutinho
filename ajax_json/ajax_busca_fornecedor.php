@@ -1,6 +1,6 @@
 ﻿<?php
-require_once ('../lib/libdba.php');
-require_once '../model/Fornecedor.php';
+require_once (dirname(__DIR__).'cantinho//lib/libdba.php');
+require_once (dirname(__DIR__).'cantinho/model/Fornecedor.php');
 $index = ($_GET['pag']-1)*10;
 $fornecedors = Fornecedor::getFornecedores($_GET['nome'],$index);
 ?>

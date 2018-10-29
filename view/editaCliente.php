@@ -1,5 +1,5 @@
 <?php
-require_once ('./model/Cliente.php');
+require_once ($GLOBALS['PATH'].'/model/Cliente.php');
 $cliente = Cliente::getCliente($_GET['id']);
 ?>
 <form class="form-horizontal" name="frm_atualiza_usuario" role="form" method="post" action="./control/controlCliente.php">

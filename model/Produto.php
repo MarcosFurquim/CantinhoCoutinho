@@ -12,7 +12,7 @@ class Produto {
 	}
 	
 	public function cadastraProduto() {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$last_user_id = $conexaoCantina->insert("produto", [
 		"nome" => $this->nome,
@@ -48,7 +48,7 @@ class Produto {
 	}
 	
 	public function atualizaProduto($idProduto) {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$rows_affected = $conexaoCantina->update("produto", [
 		"nome" => $this->nome,
@@ -59,7 +59,7 @@ class Produto {
 	}
 	
 	public static function excluiProduto($idProduto) {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$rows_affected = $conexaoCantina->delete("produto", ["id" =>$idProduto]);
 		return $rows_affected;

@@ -1,5 +1,8 @@
 ﻿<?php
-require_once ('./lib/libdba.php');
+define('PATH',dirname(__DIR__).'/cantinho');
+$GLOBALS['PATH'] = dirname(__DIR__).'/cantinho';
+// echo $GLOBALS['PATH'];exit;
+require_once (PATH.'/lib/libdba.php');
 define("VERSAO","4.1");
 ?>
 <html>

@@ -10,7 +10,7 @@ class Fornecedor {
 	}
 	
 	public function cadastraFornecedor() {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$last_forn_id = $conexaoCantina->insert("fornecedor", [
 		"nome" => $this->nome,
@@ -45,7 +45,7 @@ class Fornecedor {
 	}
 	
 	public function atualizaFornecedor($idFornecedor) {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$rows_affected = $conexaoCantina->update("fornecedor", [
 		"nome" => $this->nome,
@@ -55,7 +55,7 @@ class Fornecedor {
 	}
 	
 	public static function excluiFornecedor($idFornecedor) {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$rows_affected = $conexaoCantina->delete("fornecedor", ["id" =>$idFornecedor]);
 		return $rows_affected;

@@ -1,9 +1,9 @@
 <?php
-require_once ('../model/Venda.php');
+require_once (dirname(__DIR__).'/model/Venda.php');
 
 if($_POST['cadastro']=='S') {
 	$venda = new Venda($_POST['cliente'], '');
-	require_once ('../model/Cliente.php');
+	require_once (dirname(__DIR__).'/model/Cliente.php');
 	$last_credito_id = Cliente::creditaCliente($_POST['cliente'],$_POST['hdn_total_valor_venda'],'D');
 	if($_POST['pago']=='S'){
 		$last_credito_id_pago = Cliente::creditaCliente($_POST['cliente'],$_POST['hdn_total_valor_venda'],'C');

@@ -1,5 +1,5 @@
 ﻿<?php
-require_once './model/Produto.php';
+require_once ($GLOBALS['PATH'].'/model/Produto.php');
 $produtos = Produto::getProdutos("",0);
 $produtos_qnt = Produto::getCount();
 

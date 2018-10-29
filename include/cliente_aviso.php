@@ -1,6 +1,6 @@
 <?php
-require_once ('../lib/libdba.php');
-require_once('../model/Cliente.php');
+require_once (dirname(__DIR__).'/lib/libdba.php');
+require_once (dirname(__DIR__).'/model/Cliente.php');
 $saldo_negativo = false;
 $clientes_saldo_negatvo = "";
 $clientes = Cliente::getClientes();

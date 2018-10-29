@@ -1,5 +1,5 @@
 ﻿<?php
-require_once './model/Fornecedor.php';
+require_once ($GLOBALS['PATH'].'/model/Fornecedor.php');
 $fornecedores = Fornecedor::getFornecedores("",0);
 $fornecedores_qnt = Fornecedor::getCount();
 

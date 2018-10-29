@@ -11,7 +11,7 @@ class Cliente {
 	}
 	
 	public function cadastaCliente() {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$last_user_id = $conexaoCantina->insert("cliente", [
 		"nome" => $this->nome,
@@ -126,7 +126,7 @@ class Cliente {
 	}
 	
 	public static function creditaCliente($idCliente,$valor,$tipo) {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$last_credito_id = 0;
 		if(@$_POST['data']=='S' || !@$_POST['data']) {
@@ -149,7 +149,7 @@ class Cliente {
 	}
 	
 	public function atualizaCliente($idCliente) {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$rows_affected = $conexaoCantina->update("cliente", [
 		"nome" => $this->nome,
@@ -160,7 +160,7 @@ class Cliente {
 	}
 	
 	public static function excluiCliente($idCliente) {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$conexaoCantina->delete("cliente_credito", ["id_cliente" =>$idCliente]);
 		$rows_affected = $conexaoCantina->delete("cliente", ["id" =>$idCliente]);
@@ -202,7 +202,7 @@ class Cliente {
 	}
 	
 	public static function excluiHist($idHist) {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$rows_affected = $conexaoCantina->update("cliente_credito", [
 		"ativo" => false

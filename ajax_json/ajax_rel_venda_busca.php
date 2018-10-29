@@ -1,6 +1,6 @@
 ﻿<?php
-require_once ('../lib/libdba.php');
-require_once('../model/Venda.php');
+require_once (dirname(__DIR__).'/lib/libdba.php');
+require_once(dirname(__DIR__).'/model/Venda.php');
 if($_GET['pid']>0) {
 	$vendas = Venda::getVendas(inverteDataBD($_GET['dti']),inverteDataBD($_GET['dtf']),$_GET['pid']);
 } else {

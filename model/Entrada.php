@@ -13,7 +13,7 @@ class Entrada {
 	}
 	
 	public function cadastraEntrada() {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		//simular sobrecarga de metodo
 		//arg[0]= last record credito_cliente

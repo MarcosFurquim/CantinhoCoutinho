@@ -11,7 +11,7 @@ class Venda {
 	}
 	
 	public function cadastraVenda() {
-		require_once ('../lib/libdba.php');
+		require_once (dirname(__DIR__).'/lib/libdba.php');
 		$conexaoCantina = conectaCantina();
 		$pago = (@$_POST['pago']=='N')? 'N' :'S';
 		//simular sobrecarga de metodo
@@ -35,7 +35,7 @@ class Venda {
 			]);
 		}
 		$precototal = 0;
-		require_once ('../model/Produto.php');
+		require_once (dirname(__DIR__).'/model/Produto.php');
 		foreach($_POST["qnt"] as $id => $qnt) {
 			$preco = Produto::getPreco($id);
 			$conexaoCantina->insert("venda_produto", [

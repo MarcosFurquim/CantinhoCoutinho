@@ -1,5 +1,5 @@
 ﻿<?php
-require_once('./model/Cliente.php');
+require_once($GLOBALS['PATH'].'/model/Cliente.php');
 $clientes = Cliente::getClientes("",0);
 $clientes_qnt = Cliente::getCount();
 

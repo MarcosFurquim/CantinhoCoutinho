@@ -1,7 +1,7 @@
 ﻿<?php
 date_default_timezone_set("Brazil/East");
-require_once ('../lib/libdba.php');
-require_once ('../model/Produto.php');
+require_once (dirname(__DIR__).'/lib/libdba.php');
+require_once (dirname(__DIR__).'/model/Produto.php');
 $produtos = Produto::getProdutos();
 
 ?>
