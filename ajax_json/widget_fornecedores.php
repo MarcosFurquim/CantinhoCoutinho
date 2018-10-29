@@ -1,6 +1,6 @@
 <?php
 	require_once (dirname(__DIR__).'/lib/libdba.php');
-	require_once (dirname(__DIR__).'../model/Fornecedor.php');
+	require_once (dirname(__DIR__).'/model/Fornecedor.php');
 	$fornecedores = Fornecedor::getFornecedores($_GET['nome']);
 ?>
 <style>

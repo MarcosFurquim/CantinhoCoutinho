@@ -1,5 +1,5 @@
 ﻿<?php
-require_once ($GLOBALS['PATH'].'/model/Cliente.php');
+require_once (dirname(__DIR__).'/model/Cliente.php');
 	$cliente = new Cliente($_POST['nome_cli'],$_POST['email_cli'],$_POST['tel_cli']);
 	if(isset($_POST['btn_cadastrar'])) {
 		if($cliente->cadastaCliente()) {
