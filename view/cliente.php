@@ -178,7 +178,7 @@ for($i=0;$i<sizeof($clientes);$i++) {
 <div class="form-group " style="margin-top:30px;">
 	<input type="text" class="form-control" placeholder="Filtrar por nome" id="filtro_nome_cliente" />
 </div>
-<div id="cliente_list" class="form-group">
+<div id="cliente_list" class="table-responsive form-group">
 	<table class="table table-striped table-hover">
 		<thead>
 			<tr>

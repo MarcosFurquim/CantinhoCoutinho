@@ -301,7 +301,7 @@ $clientes = Cliente::getClientes();
 		</div>
 	</div>	
 	
-	<div id="detalheCliente" class=" col-sm-offset-3 col-sm-5 ">
+	<div id="detalheCliente" class="table-responsive col-sm-offset-3 col-sm-5 ">
 		<b>Nome:&nbsp;</b><span id="cli_nome"></span><br/>
 		<b>Crédito(R$):&nbsp;</b><span id="cli_saldo"></span><br/>
 	</div>

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 define('PATH',dirname(__DIR__).'/cantinho');
 $GLOBALS['PATH'] = dirname(__DIR__).'/cantinho';
 // echo $GLOBALS['PATH'];exit;
@@ -8,6 +8,7 @@ define("VERSAO","4.1");
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="icon" type="image/png" href="./img/favicon.png" />
 		<title>Cantinho do Coutinho</title>
 		<script src="./js/jquery-1.11.1.min.js"></script>

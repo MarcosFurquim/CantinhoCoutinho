@@ -109,7 +109,7 @@ $qnt_page = (substr($qnt_page, 2, 1) > 0)?(substr($qnt_page, 0, 1)+1):substr($qn
 <div class="form-group " style="margin-top:30px;">
 	<input type="text" class="form-control" placeholder="Filtrar por nome" id="filtro_nome_fornecedor" />
 </div>
-<div id="fornecedor_list" class="form-group">
+<div id="fornecedor_list" class="table-responsive form-group">
 	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
