@@ -1,8 +1,6 @@
-﻿<?php
+<?php
 require_once('./model/Cliente.php');
-
 $clientes = Cliente::getClientes();
-
 ?>
 <script src="./js/datapicker-13.1/js/bootstrap-datepicker.js"></script>
 <script src="./js/datapicker-13.1/js/locales/bootstrap-datepicker.pt-BR.js"></script>

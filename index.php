@@ -1,9 +1,24 @@
 <?php
-define('PATH',dirname(__DIR__).'/cantinho');
-$GLOBALS['PATH'] = dirname(__DIR__).'/cantinho';
-// echo $GLOBALS['PATH'];exit;
+$path = '/cantinho';
+define('PATH',dirname(__DIR__).$path);
+$GLOBALS['PATH'] = dirname(__DIR__).$path;
 require_once (PATH.'/lib/libdba.php');
-define("VERSAO","4.1");
+define("VERSAO","4.2");
+session_start();
+$page = isset($_GET['page']) ? addslashes(trim($_GET['page'])) : false;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	require_once ($GLOBALS['PATH'].'/model/Usuario.php');
+	$usuario = Usuario::logar($_POST['usuario'],sha1($_POST['senha']));
+	if($usuario) {
+			$_SESSION["logado"] = true;
+			header ('Location: ?page=venda');
+	} else {
+			session_destroy();
+	}
+}
+if ($page != 'login' && !$_SESSION["logado"]) {
+	header ("location: ?page=login");
+}
 ?>
 <html>
 	<head>
@@ -62,7 +77,7 @@ define("VERSAO","4.1");
 		</nav>
 		<div class="container trasparente">	
 			<div class="container-contents">
-				<?php
+			<?php
 				// Aqui ele vai verificar se existe um parâmetro para $_GET na URL.
 				$page = isset($_GET['page']) ? addslashes(trim($_GET['page'])) : false;
 

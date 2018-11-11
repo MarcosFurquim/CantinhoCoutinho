@@ -1,0 +1,17 @@
+version: '1'
+services:
+  proxy:
+    container_name: proxy-cna.local.dotgroup.com.br
+    image: jwilder/nginx-proxy:latest
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "./myproxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro"
+    ports:
+      - "80:80"
+    restart: unless-stopped
+  web:
+    container_name: cantinhocoutinho.com.br
+    ports:
+     - "5000:5000"
+  redis:
+    image: "redis:alpine"
