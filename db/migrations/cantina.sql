@@ -11,7 +11,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES */;
 /*!40103 SET SQL_NOTES='ON' */;
 
-USE `cantina`;
+USE `cantinho`;
 
 #
 # Source for table "cliente"

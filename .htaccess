@@ -1,0 +1,15 @@
+# Use PHP71
+AddHandler application/x-httpd-php56 .php
+<IfModule mod_suphp.c>
+suPHP_ConfigPath /opt/php56/lib
+</IfModule>
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>

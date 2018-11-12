@@ -1,17 +1,60 @@
-version: '1'
+version: '2'
 services:
-  proxy:
-    container_name: proxy-cna.local.dotgroup.com.br
-    image: jwilder/nginx-proxy:latest
-    volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "./myproxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro"
-    ports:
-      - "80:80"
-    restart: unless-stopped
-  web:
-    container_name: cantinhocoutinho.com.br
-    ports:
-     - "5000:5000"
-  redis:
-    image: "redis:alpine"
+
+    proxy:
+        container_name: proxy.cantinho
+        image: jwilder/nginx-proxy
+        ports:
+          - "80:80"
+        depends_on:
+          - local.cantinho
+          - local.pma
+          - local.db
+        volumes:
+          - "/var/run/docker.sock:/tmp/docker.sock:ro"
+          - "./nginx.conf:/etc/nginx/conf.d/nginx.conf"
+        
+    local.cantinho:
+        container_name: local.cantinho
+        image: cantinho
+        restart: always
+        volumes:
+          - ".:/var/www/html/:rw"
+        environment:
+          VIRTUAL_HOST: 'local.cantinho'
+          APACHE_DOCUMENT_ROOT: '/var/www/html/'
+          ENV_ALIAS: 'dev'
+          #DATABASE
+          DB_HOST: 'local.db'
+          DB_PORT: '3306'
+          DB_DATABASE: 'cantinho'
+          DB_USERNAME: 'root'
+          DB_PASSWORD: 'root'
+        build: .docker/
+        depends_on:
+          - local.db
+
+    local.db:
+        container_name: local.db
+        image: mariadb
+        volumes:
+          - "./db/local:/var/lib/mysql"
+        environment:
+          VIRTUAL_HOST: local.db
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: cantinho
+        restart: always
+        ports:
+          - "3306:3306"
+        expose:
+          - "3306"
+
+    local.pma:
+        image: phpmyadmin/phpmyadmin
+        container_name: local.pma
+        restart: always
+        environment:
+          VIRTUAL_HOST: local.pma
+          PMA_HOST: local.db
+        volumes:
+          - /sessions

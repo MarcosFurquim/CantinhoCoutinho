@@ -2,14 +2,26 @@
 require_once ('medoo.php');
 
 function conectaCantina() {
+
+	// $conexaoCantina = new medoo([
+	// 	'database_type' => 'mysql',
+	// 	'database_name' => 'energym_cantinho',
+	// 	'server' => 'localhost',
+	// 	'username' => 'energym_cantinho',
+	// 	'password' => 'mff72985141',
+	// 	'charset' => 'utf8'
+	// ]);
+
+	// Ambiente de Teste Remoto
 	$conexaoCantina = new medoo([
-	'database_type' => 'mysql',
-	'database_name' => 'energym_cantinho',
-	'server' => 'localhost',
-	'username' => 'energym_cantinho',
-	'password' => 'mff72985141',
-	'charset' => 'utf8'
+		'database_type' => 'mysql',
+		'database_name' => 'cantinho_teste',
+		'server' => 'cantinho_teste.mysql.dbaas.com.br',
+		'username' => 'cantinho_teste',
+		'password' => 'cantinho@2018',
+		'charset' => 'utf8'
 	]);
+
 	return $conexaoCantina;
 }
 

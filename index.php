@@ -1,11 +1,14 @@
 <?php
-$path = '/cantinho';
-define('PATH',dirname(__DIR__).$path);
-$GLOBALS['PATH'] = dirname(__DIR__).$path;
+$path = '.';
+define('PATH',$path);
+$GLOBALS['PATH'] = $path;
 require_once (PATH.'/lib/libdba.php');
 define("VERSAO","4.2");
 session_start();
+
+
 $page = isset($_GET['page']) ? addslashes(trim($_GET['page'])) : false;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	require_once ($GLOBALS['PATH'].'/model/Usuario.php');
 	$usuario = Usuario::logar($_POST['usuario'],sha1($_POST['senha']));
